@@ -1,0 +1,8 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Enter account holder’s name: JohnDoe
+Enter the transfer account number: 12345
+Enter recipient account number: 67890
+Enter amount to transfer: 500.00
+Transfer successful.
+Session terminated.

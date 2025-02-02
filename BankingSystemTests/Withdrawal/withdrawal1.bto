@@ -1,0 +1,7 @@
+Welcome to the banking system.
+Enter session type: standard or admin.
+Enter account holder’s name: JaneDoe
+Enter withdrawal account number: 67890
+Enter amount to withdraw: 200.00
+Withdrawal successful.
+Session terminated.
