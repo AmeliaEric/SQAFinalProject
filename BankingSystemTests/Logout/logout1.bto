@@ -1,0 +1,7 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Enter account holder’s name: JohnDoe
+Unprivileged transaction not allowed in standard mode: disable
+Session terminated.
+
+Session terminated. No further transactions are allowed.
