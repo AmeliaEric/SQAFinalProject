@@ -1,0 +1,7 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Admin session active.
+Enter account holder’s name: UnknownUser
+Error: Account holder does not exist.
+Session terminated.
+

@@ -1,0 +1,8 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Admin session active.
+Enter account holder’s name: Alice
+Enter account number: 11223
+Account disabled.
+Session terminated.
+

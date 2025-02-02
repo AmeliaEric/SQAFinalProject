@@ -1,0 +1,10 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Admin session active.
+Transaction in progress: withdraw 200
+Enter account holder’s name: JohnDoe
+Enter account number: 12345
+Error: Ongoing transaction canceled due to account being disabled.
+Account disabled.
+Session terminated
+

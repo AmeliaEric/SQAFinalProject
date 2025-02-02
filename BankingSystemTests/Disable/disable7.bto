@@ -1,0 +1,9 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Admin session active.
+Enter account holder’s name: JohnDoe
+Enter account number: 12345
+Account disabled.
+Error: Transactions not allowed on disabled accounts.
+Session terminated.
+
