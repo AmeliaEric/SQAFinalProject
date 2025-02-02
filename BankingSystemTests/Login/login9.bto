@@ -1,0 +1,4 @@
+Welcome to the banking system. Please enter session type: standard or admin.
+Enter account holder’s name: johndoe
+Error: Account holder does not exist. (Case-sensitive check failed)
+

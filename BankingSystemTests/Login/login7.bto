@@ -1,0 +1,4 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Enter account holder’s name: JohnDoe
+Error: Already logged in. Logout before attempting a new login.
