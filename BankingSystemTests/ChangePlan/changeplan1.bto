@@ -1,0 +1,6 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Enter account holder’s name: BobSmith
+Enter the account number: 54321
+Account plan updated successfully.
+Session terminated.
