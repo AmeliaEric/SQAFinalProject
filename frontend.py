@@ -1,5 +1,5 @@
 # This program simulates a banking system front end that processes transactions.
-# Input files: "BankingSystemTests/fourcases.inp"
+# Input files: "current_accounts_file.txt"
 # Output file: daily_transaction_file.txt
 # The program processes a stream of transactions and writes the results to the output file.
 
@@ -22,7 +22,7 @@ class Account:
         self.status = status
         self.balance = balance
         self.transaction_plan = transaction_plan
-        self.current_accounts_file = "BankingSystemTests/fourcases.inp"
+        self.current_accounts_file = "current_accounts_file.txt"
         self.daily_transaction_file = "daily_transaction_file.txt"
         
 
@@ -111,7 +111,7 @@ class User:
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
-        self.current_accounts_file = "BankingSystemTests/fourcases.inp"
+        self.current_accounts_file = "current_accounts_file.txt"
 
     def login(self, username, session_type):
         """
@@ -125,6 +125,7 @@ class User:
         self.is_logged_in = True
         self.read_accounts_file()
         print(f"Logged in as {username} in {session_type} mode.")
+
 
     def logout(self):
         """
@@ -145,11 +146,22 @@ class User:
             with open(self.current_accounts_file, "r") as file:
                 lines = file.readlines()
                 for line in lines:
-                    account_data = line.strip()
-                    account = Account(*account_data)
+                    line = line.strip()
+                    if line.startswith("END_OF_FILE"):
+                        break  # Stop reading when end marker is reached
+                    
+                    # Extract fields based on fixed positions
+                    account_number = line[:5].strip()
+                    account_name = line[6:26].strip()
+                    status = line[27].strip()
+                    balance = float(line[29:38].strip())
+                    
+                    # Create account object and add it to list
+                    account = Account(account_number, account_name, status, balance, "NP")
                     self.accounts.append(account)
         except FileNotFoundError:
             print("Current user accounts file not found.")
+
 
     def write_transaction_file(self):
         """
@@ -160,6 +172,18 @@ class User:
                 file.write(transaction + "\n")
             file.write("00_END_OF_FILE_________00000_00000.00__\n")
         print("Transaction file written.")
+
+
+    def find_account(self, account_num):
+        """
+        Finds an account by account number.
+        Returns: The matching account, or None if not found.
+        """
+        for account in self.accounts:
+            if account.account_number == account_num:
+                return account
+        print(f"Account {account_num} not found.")
+        return None
 
 
 class StandardUser(User):
@@ -237,17 +261,6 @@ class StandardUser(User):
             transaction_msg = account.select_transaction(4, amount)
             self.transactions.append(transaction_msg)
             print(transaction_msg)
-
-    def find_account(self, account_num):
-        """
-        Finds an account by account number.
-        Returns: The matching account, or None if not found.
-        """
-        for account in self.accounts:
-            if account.account_number == account_num:
-                return account
-        print(f"Account {account_num} not found.")
-        return None
 
 
 class Admin(User):
@@ -329,21 +342,21 @@ if __name__ == "__main__":
     Input: User actions (login, transactions)
     Output: Transaction records written to daily_transaction_file.txt
     """
-    user = User()
+    
     standard_user = StandardUser()
-    admin = Admin()
-
-    # Example transaction stream
-    user.login("john_doe", "standard")
+    standard_user.login("john_doe", "standard")
     standard_user.withdrawal("12345", 200)
     standard_user.transfer("12345", "67890", 300)
     standard_user.pay_bill("12345", 100, "EC")
     standard_user.deposit("12345", 500)
-    user.logout()
+    standard_user.logout()
 
-    user.login("admin_user", "admin")
+    admin = Admin()
+    admin.login("admin_user", "admin")
     admin.create_account("Jane Doe", "54321", 1000, "NP")
     admin.delete_account("Jane Doe", "54321")
     admin.disable_account("John Doe", "12345")
     admin.change_plan("John Doe", "12345")
-    user.logout()
+    admin.logout()
+
+
