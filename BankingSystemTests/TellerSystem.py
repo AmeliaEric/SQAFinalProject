@@ -22,7 +22,7 @@ class Account:
         self.status = status
         self.balance = balance
         self.transaction_plan = transaction_plan
-        self.current_accounts_file = "current_accounts_file.txt"
+        self.current_accounts_file = "BankingSystemTests/current_accounts_file.txt"
         self.daily_transaction_file = "daily_transaction_file.txt"
         
 
@@ -111,7 +111,7 @@ class User:
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
-        self.current_accounts_file = "current_accounts_file.txt"
+        self.current_accounts_file = "BankingSystemTests/current_accounts_file.txt"
 
     def login(self, username, session_type):
         """
@@ -119,6 +119,9 @@ class User:
         """
         if self.is_logged_in:
             print("Already logged in. Please logout first.")
+            return
+        if not username or not session_type:
+            print("Error: Username and session type are required.")
             return
         self.username = username
         self.session_type = session_type
@@ -132,11 +135,11 @@ class User:
         Logs the user out of the banking system.
         """
         if not self.is_logged_in:
-            print("Not logged in.")
+            print("Error: No active session. Please login first.")
             return
         self.write_transaction_file()
         self.is_logged_in = False
-        print("Logged out.")
+        print("Session terminated.")
 
     def read_accounts_file(self):
         """
@@ -199,6 +202,7 @@ class StandardUser(User):
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_paybill_limit = 2000.0
+        self.max_deposit_limit = 1000.0
 
     def withdrawal(self, account_num, amount):
         """
@@ -208,9 +212,18 @@ class StandardUser(User):
             print("Error: No active session. Please login first.")
             return
         if amount > self.max_withdrawal_limit:
-            print("Error: Withdrawal amount exceeds the $1000.00 limit.")
+            print("Error: Withdrawal amount exceeds the ${self.max_withdrawal_limit} limit.")
             return
         account = self.find_account(account_num)
+        if account.status == "D":
+            print("Error: Cannot withdraw from a disabled account.")
+            return
+        if account.balance < amount:
+            print("Error: Insufficient funds.")
+            return
+        if amount <= 0:
+            print("Error: Withdrawal amount must be positive.")
+            return
         if account:
             transaction_msg = account.select_transaction(1, amount)
             self.transactions.append(transaction_msg)
@@ -221,13 +234,28 @@ class StandardUser(User):
         Processes a transfer transaction for a standard user.
         """
         if not self.is_logged_in:
-            print("Not logged in.")
+            print("Error: No active session. Please login first.")
             return
         if amount > self.max_transfer_limit:
-            print("Transfer amount exceeds limit.")
+            print("Error: Transfer amount exceeds ${self.max_transfer_limit} limit.")
             return
         from_account = self.find_account(from_acc)
         to_account = self.find_account(to_acc)
+        if from_account.status == "D":
+            print("Error: Cannot transfer from a disabled account.")
+            return
+        if from_account.balance < amount:
+            print("Error: Insufficient funds.")
+            return
+        if from_account.account_number == to_account.account_number:
+            print("Error: Cannot transfer to the same account.")
+            return
+        if amount == 0:
+            print("Error: Transfer amount must be greater than zero.")
+            return
+        if amount < 0:
+            print("Error: Transfer amount must be positive.")
+            return
         if from_account and to_account:
             transaction_msg = from_account.select_transaction(2, amount)
             self.transactions.append(transaction_msg)
@@ -238,7 +266,10 @@ class StandardUser(User):
         Processes a bill payment transaction for a standard user.
         """
         if not self.is_logged_in:
-            print("Not logged in.")
+            print("Error: No active session. Please login first.")
+            return
+        if self.session_type == "standard":
+            print("Error: This transaction requires admin access.")
             return
         if amount > self.max_paybill_limit:
             print("Payment amount exceeds limit.")
@@ -254,9 +285,21 @@ class StandardUser(User):
         Processes a deposit transaction for a standard user.
         """
         if not self.is_logged_in:
-            print("Not logged in.")
+            print("Error: No active session. Please login first.")
+            return
+        if amount > self.max_deposit_limit:
+            print("Error: Deposit amount exceeds ${self.max_transfer_limit} limit.")
             return
         account = self.find_account(account_num)
+        if account.status == "D":
+            print("Error: Cannot deposit into a disabled account.")
+            return
+        if amount == 0:
+            print("Error: Deposit amount must be greater than zero.")
+            return
+        if amount < 0:
+            print("Error: Deposit amount must be positive.")
+            return
         if account:
             transaction_msg = account.select_transaction(4, amount)
             self.transactions.append(transaction_msg)
@@ -280,14 +323,21 @@ class Admin(User):
         Creates a new account for an admin.
         """
         if not self.is_logged_in or self.session_type != "admin":
-            print("Not logged in as admin.")
+            print("Error: This transaction requires admin access.")
             return
         if len(account_name) > 20:
-            print("Account holder name exceeds 20 characters.")
+            print("Error: Account holder name must be 20 characters or less.")
+            return
+        if balance < 0:
+            print("Error: Initial balance must be at least $0.00.")
             return
         if balance > 99999.99:
-            print("Balance exceeds maximum limit.")
+            print("Error: Initial balance cannot exceed $99999.99.")
             return
+        #account = self.find_account(account_num)
+        #if account.account_num == account_num:
+            #print("Error: Account number already in use.")
+            #return
         new_account = Account(account_num, account_name, "A", balance, transaction_plan)
         self.accounts.append(new_account)
         self.transactions.append(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
@@ -298,9 +348,23 @@ class Admin(User):
         Deletes an account for an admin.
         """
         if not self.is_logged_in or self.session_type != "admin":
-            print("Not logged in as admin.")
+            print("Error: This transaction requires admin access.")
             return
+        if not account_name:
+            print("Error: Account holder name cannot be empty.")
+            return
+        if not account_num:
+            print("Error: Account number cannot be empty.")
+            return 
         account = self.find_account(account_num)
+        if not account:
+            print("Error: Account does not exist.")
+            return
+        if account.account_name != account_name:
+            print("Account name for the account number given: " + account.account_name)
+            print("Account name inputed: " + account_name)
+            print("Error: Account holder name does not match account number.")
+            return
         if account:
             self.accounts.remove(account)
             self.transactions.append(f"Deleted account {account_num} for {account_name}")
@@ -311,9 +375,24 @@ class Admin(User):
         Disables an account for an admin.
         """
         if not self.is_logged_in or self.session_type != "admin":
-            print("Not logged in as admin.")
+            print("Error: This transaction requires admin access.")
             return
+        if not account_name:
+            print("Error: Account holder name cannot be empty.")
+            return
+        if not account_num:
+            print("Error: Account number cannot be empty.")
+            return 
         account = self.find_account(account_num)
+        if not account:
+            print("Error: Account does not exist.")
+            return
+        if account.account_name != account_name:
+            print("Error: Account holder name does not match account number.")
+            return
+        if account.status == "D":
+            print("Error: Account already disabled.")
+            return
         if account:
             account.select_maintenance("disable")
             self.transactions.append(f"Disabled account {account_num} for {account_name}")
@@ -324,9 +403,27 @@ class Admin(User):
         Changes the transaction plan for an account.
         """
         if not self.is_logged_in or self.session_type != "admin":
-            print("Not logged in as admin.")
+            print("Error: This transaction requires admin access.")
             return
+        if not account_name:
+            print("Error: Account holder name cannot be empty.")
+            return
+        if not account_num:
+            print("Error: Account number cannot be empty.")
+            return 
         account = self.find_account(account_num)
+        if not account:
+            print("Error: Account does not exist.")
+            return
+        if account.account_name != account_name:
+            print("Error: Account holder name does not match account number.")
+            return
+        if account.status == "D":
+            print("Error: Cannot change plan for a disabled account.")
+            return
+        if account.transaction_plan == "NP":
+            print("Account is already on the non-student plan.")
+            return
         if account:
             account.select_maintenance("change_plan")
             self.transactions.append(f"Changed plan for account {account_num} for {account_name}")
@@ -358,5 +455,3 @@ if __name__ == "__main__":
     admin.disable_account("John Doe", "12345")
     admin.change_plan("John Doe", "12345")
     admin.logout()
-
-
