@@ -170,7 +170,7 @@ class StandardUser(User):
     """
     def __init__(self):
         super().__init__()
-        self.max_withdrawal_limit = 500.0
+        self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_paybill_limit = 2000.0
 
@@ -179,10 +179,10 @@ class StandardUser(User):
         Processes a withdrawal transaction for a standard user.
         """
         if not self.is_logged_in:
-            print("Not logged in.")
+            print("Error: No active session. Please login first.")
             return
         if amount > self.max_withdrawal_limit:
-            print("Withdrawal amount exceeds limit.")
+            print("Error: Withdrawal amount exceeds the $1000.00 limit.")
             return
         account = self.find_account(account_num)
         if account:
