@@ -1,5 +1,5 @@
 # This program simulates a banking system front end that processes transactions.
-# Input files: current_user_accounts_file.txt
+# Input files: "BankingSystemTests/fourcases.inp"
 # Output file: daily_transaction_file.txt
 # The program processes a stream of transactions and writes the results to the output file.
 
@@ -22,8 +22,9 @@ class Account:
         self.status = status
         self.balance = balance
         self.transaction_plan = transaction_plan
-        self.current_accounts_file = "current_accounts_file.txt"
+        self.current_accounts_file = "BankingSystemTests/fourcases.inp"
         self.daily_transaction_file = "daily_transaction_file.txt"
+        
 
     def select_transaction(self, transaction_type, amount):
         """
@@ -110,7 +111,7 @@ class User:
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
-        self.current_accounts_file = "current_accounts_file.txt"
+        self.current_accounts_file = "BankingSystemTests/fourcases.inp"
 
     def login(self, username, session_type):
         """
@@ -144,7 +145,7 @@ class User:
             with open(self.current_accounts_file, "r") as file:
                 lines = file.readlines()
                 for line in lines:
-                    account_data = line.strip().split(',')
+                    account_data = line.strip()
                     account = Account(*account_data)
                     self.accounts.append(account)
         except FileNotFoundError:
