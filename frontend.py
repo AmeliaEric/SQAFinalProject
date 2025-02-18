@@ -110,6 +110,7 @@ class User:
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
+        self.current_accounts_file = "current_accounts_file.txt"
 
     def login(self, username, session_type):
         """
