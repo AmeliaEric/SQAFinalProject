@@ -212,7 +212,7 @@ class StandardUser(User):
             print("Error: No active session. Please login first.")
             return
         if amount > self.max_withdrawal_limit:
-            print("Error: Withdrawal amount exceeds the ${self.max_withdrawal_limit} limit.")
+            print(f"Error: Withdrawal amount exceeds the ${self.max_withdrawal_limit} limit.")
             return
         account = self.find_account(account_num)
         if account.status == "D":
@@ -430,6 +430,68 @@ class Admin(User):
             print(f"Changed plan for account {account_num} for {account_name}")
 
 
+
+# Test Functions
+def valid_deposit():
+    print("=== Test: Valid Deposit ===")
+    user = StandardUser()
+    user.login("john_doe", "standard")
+    user.deposit("12345", 500)
+    user.logout()
+    print("\n")
+
+def withdrawal_insufficient_funds():
+    print("=== Test: Withdrawal with Insufficient Funds ===")
+    user = StandardUser()
+    user.login("john_doe", "standard")
+    # Assuming account 12345 has less than 10000 available
+    user.withdrawal("12345", 10000)
+    user.logout()
+    print("\n")
+
+def transfer_same_account():
+    print("=== Test: Transfer to Same Account ===")
+    user = StandardUser()
+    user.login("john_doe", "standard")
+    user.transfer("12345", "12345", 100)
+    user.logout()
+    print("\n")
+
+def delete_account_wrong_name():
+    print("=== Test: Delete Account with Mismatched Account Name ===")
+    admin = Admin()
+    admin.login("admin_user", "admin")
+    # Provide an incorrect account name to trigger an error
+    admin.delete_account("WrongName", "12345")
+    admin.logout()
+    print("\n")
+
+def disable_account_wrong_name():
+    print("=== Test: Disable Account with Mismatched Account Name ===")
+    admin = Admin()
+    admin.login("admin_user", "admin")
+    # Provide an incorrect account name to trigger an error
+    admin.disable_account("WrongName", "12345")
+    admin.logout()
+    print("\n")
+
+def valid_transfer():
+    print("=== Test: Valid Transfer ===")
+    user = StandardUser()
+    user.login("john_doe", "standard")
+    user.transfer("12345", "67890", 300)
+    user.logout()
+    print("\n")
+
+def run_tests():
+    valid_deposit()
+    withdrawal_insufficient_funds()
+    transfer_same_account()
+    delete_account_wrong_name()
+    disable_account_wrong_name()
+    valid_transfer()
+
+
 # Main program
 if __name__ == "__main__":
     """
@@ -455,3 +517,5 @@ if __name__ == "__main__":
     admin.disable_account("John Doe", "12345")
     admin.change_plan("John Doe", "12345")
     admin.logout()
+
+    run_tests()

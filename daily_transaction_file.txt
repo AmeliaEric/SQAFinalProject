@@ -1,2 +1,2 @@
-Created account for Jane Doe with account number 54321 and balance $1000
+Transferred $300 from account 12345
 00_END_OF_FILE_________00000_00000.00__
