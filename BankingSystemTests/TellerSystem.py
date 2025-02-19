@@ -22,7 +22,7 @@ class Account:
         self.status = status
         self.balance = balance
         self.transaction_plan = transaction_plan
-        self.current_accounts_file = "BankingSystemTests/current_accounts_file.txt"
+        self.current_accounts_file = "current_accounts_file.txt"
         self.daily_transaction_file = "daily_transaction_file.txt"
         
 
@@ -111,7 +111,7 @@ class User:
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
-        self.current_accounts_file = "BankingSystemTests/current_accounts_file.txt"
+        self.current_accounts_file = "current_accounts_file.txt"
 
     def login(self, username, session_type):
         """
@@ -202,7 +202,6 @@ class StandardUser(User):
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_paybill_limit = 2000.0
-        self.max_deposit_limit = 1000.0
 
     def withdrawal(self, account_num, amount):
         """
@@ -268,9 +267,6 @@ class StandardUser(User):
         if not self.is_logged_in:
             print("Error: No active session. Please login first.")
             return
-        if self.session_type == "standard":
-            print("Error: This transaction requires admin access.")
-            return
         if amount > self.max_paybill_limit:
             print("Payment amount exceeds limit.")
             return
@@ -286,9 +282,6 @@ class StandardUser(User):
         """
         if not self.is_logged_in:
             print("Error: No active session. Please login first.")
-            return
-        if amount > self.max_deposit_limit:
-            print("Error: Deposit amount exceeds ${self.max_transfer_limit} limit.")
             return
         account = self.find_account(account_num)
         if account.status == "D":
@@ -334,10 +327,10 @@ class Admin(User):
         if balance > 99999.99:
             print("Error: Initial balance cannot exceed $99999.99.")
             return
-        #account = self.find_account(account_num)
-        #if account.account_num == account_num:
-            #print("Error: Account number already in use.")
-            #return
+        account = self.find_account(account_num)
+        if account != None:
+            print("Error: Account number already in use.")
+            return
         new_account = Account(account_num, account_name, "A", balance, transaction_plan)
         self.accounts.append(new_account)
         self.transactions.append(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
@@ -431,7 +424,7 @@ class Admin(User):
 
 
 
-# Test Functions
+# Extra Test Functions
 def valid_deposit():
     print("=== Test: Valid Deposit ===")
     user = StandardUser()
@@ -501,21 +494,26 @@ if __name__ == "__main__":
     Input: User actions (login, transactions)
     Output: Transaction records written to daily_transaction_file.txt
     """
-    
+
+    # Example
     standard_user = StandardUser()
     standard_user.login("john_doe", "standard")
     standard_user.withdrawal("12345", 200)
-    standard_user.transfer("12345", "67890", 300)
+    standard_user.transfer("12345", "67890", 200)
     standard_user.pay_bill("12345", 100, "EC")
-    standard_user.deposit("12345", 500)
+    standard_user.deposit("12345", 600)
+    standard_user.pay_bill("12345", 800, "EC")
     standard_user.logout()
 
     admin = Admin()
     admin.login("admin_user", "admin")
-    admin.create_account("Jane Doe", "54321", 1000, "NP")
-    admin.delete_account("Jane Doe", "54321")
-    admin.disable_account("John Doe", "12345")
-    admin.change_plan("John Doe", "12345")
+    admin.create_account("EishaRizvi__________", "05452", 1000, "NP")
+    admin.delete_account("JaneDoe_____________" , "67890")
+    admin.change_plan("JohnDoe_____________", "12345")
+    admin.disable_account("JohnDoe_____________", "12345")
+    admin.disable_account("EishaRizvi__________", "12345")
+    admin.change_plan("JaneDoe_____________" , "67890")
     admin.logout()
 
+    print("\nExtra Tests: \n")
     run_tests()
