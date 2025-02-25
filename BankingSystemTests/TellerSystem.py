@@ -2,7 +2,7 @@
 # Input files: "current_accounts_file.txt"
 # Output file: daily_transaction_file.txt
 # The program processes a stream of transactions and writes the results to the output file.
-
+import sys
 class Account:
     """
     Represents a bank account for an individual user with details such as account number,
@@ -107,13 +107,14 @@ class User:
         accounts (list): List of accounts associated with the user.
         transactions (list): List of completed transactions during the session.
     """
-    def __init__(self):
+    def __init__(self, current_accounts_file, transaction_file):
         self.username = None
         self.session_type = None
         self.is_logged_in = False
         self.accounts = []
         self.transactions = []
-        self.current_accounts_file = "current_accounts_file.txt"
+        self.current_accounts_file = current_accounts_file
+        self.transaction_file = transaction_file
 
     def login(self, username, session_type):
         """
@@ -172,7 +173,7 @@ class User:
         Writes the transaction history to the daily transaction file and updates the current accounts file.
         """
         # Writing to daily transaction file
-        with open("daily_transaction_file.txt", "a") as transaction_file:
+        with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
                 transaction_code, account_name, account_number, amount, misc = transaction.split()
                 # Formatting each field properly
