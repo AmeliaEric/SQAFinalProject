@@ -1,6 +1,6 @@
-12345 JohnDoe_____________ A 00500.00
-67890 JaneDoe_____________ A 01000.00
-54321 BobSmith____________ A 00250.00
-98765 AliceBrown__________ A 05000.00
-11111 CharlieAdams________ A 07500.00
-END_OF_FILE._________________________
+12345 JohnDoe_____________ D      0.00 NP
+54321 BobSmith____________ A    250.00 NP
+98765 AliceBrown__________ A   5000.00 NP
+11111 CharlieAdams________ A   7500.00 NP
+05452 EishaRizvi__________ A    900.00 NP
+END_OF_FILE

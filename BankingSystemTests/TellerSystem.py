@@ -217,8 +217,8 @@ class StandardUser(User):
         max_transfer_limit (float): Maximum transfer limit for standard users.
         max_paybill_limit (float): Maximum pay bill limit for standard users.
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, current_accounts_file, transaction_file):
+        super().__init__(current_accounts_file, transaction_file)
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_paybill_limit = 2000.0
@@ -371,8 +371,8 @@ class Admin(User):
         disable_account: Disables an existing account.
         change_plan: Changes the transaction plan of an account.
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, current_accounts_file, transaction_file):
+        super().__init__(current_accounts_file, transaction_file)
 
     def create_account(self, account_name, account_num, balance, transaction_plan):
         """
@@ -493,7 +493,7 @@ class Admin(User):
 # Extra Test Functions
 def valid_deposit():
     print("=== Test: Valid Deposit ===")
-    user = StandardUser()
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     user.login("john_doe", "standard")
     user.deposit("12345", 500, "JohnDoe_____________")
     user.logout()
@@ -501,7 +501,7 @@ def valid_deposit():
 
 def withdrawal_insufficient_funds():
     print("=== Test: Withdrawal with Insufficient Funds ===")
-    user = StandardUser()
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     user.login("john_doe", "standard")
     # Assuming account 12345 has less than 10000 available
     user.withdrawal("12345", 10000, "JohnDoe_____________")
@@ -510,7 +510,7 @@ def withdrawal_insufficient_funds():
 
 def transfer_same_account():
     print("=== Test: Transfer to Same Account ===")
-    user = StandardUser()
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     user.login("john_doe", "standard")
     user.transfer("12345", "12345", 100, "JohnDoe_____________")
     user.logout()
@@ -518,7 +518,7 @@ def transfer_same_account():
 
 def delete_account_wrong_name():
     print("=== Test: Delete Account with Mismatched Account Name ===")
-    admin = Admin()
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
     admin.login("admin_user", "admin")
     # Provide an incorrect account name to trigger an error
     admin.delete_account("WrongName", "12345")
@@ -527,7 +527,7 @@ def delete_account_wrong_name():
 
 def disable_account_wrong_name():
     print("=== Test: Disable Account with Mismatched Account Name ===")
-    admin = Admin()
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
     admin.login("admin_user", "admin")
     # Provide an incorrect account name to trigger an error
     admin.disable_account("WrongName", "12345")
@@ -536,7 +536,7 @@ def disable_account_wrong_name():
 
 def valid_transfer():
     print("=== Test: Valid Transfer ===")
-    user = StandardUser()
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     user.login("john_doe", "standard")
     user.transfer("12345", "67890", 300, "JohnDoe_____________")
     user.logout()
@@ -562,7 +562,7 @@ if __name__ == "__main__":
     """
 
     # Example
-    standard_user = StandardUser()
+    standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     standard_user.login("JohnDoe_____________", "standard")
     standard_user.withdrawal("12345", 200, "JohnDoe_____________")
     standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
@@ -571,7 +571,7 @@ if __name__ == "__main__":
     standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
     standard_user.logout()
 
-    admin = Admin()
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
     admin.login("admin_user", "admin")
     admin.create_account("EishaRizvi__________", "05452", 900, "NP")
     admin.delete_account("JaneDoe_____________" , "67890")
