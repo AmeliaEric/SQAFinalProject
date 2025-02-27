@@ -5,7 +5,7 @@ SQA Final Project
 <br />Step 1: Done! Sadhna
 <br />Step 2: Done! Amelia
 <br />Step 3: Done! Amelia
-<br />Step 4:
+<br />Step 4: Done! Amelia
 <br />Step 5:
 <br />Step 6:
 <br />Step 7:
