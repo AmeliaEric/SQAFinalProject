@@ -491,95 +491,94 @@ class Admin(User):
             
 
 # Extra Test Functions
-def valid_deposit():
-    print("=== Test: Valid Deposit ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.deposit("12345", 500, "JohnDoe_____________")
-    user.logout()
-    print("\n")
+#def valid_deposit():
+#    print("=== Test: Valid Deposit ===")
+#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+#    user.login("john_doe", "standard")
+#    user.logout()
+#    print("\n")
 
-def withdrawal_insufficient_funds():
-    print("=== Test: Withdrawal with Insufficient Funds ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    # Assuming account 12345 has less than 10000 available
-    user.withdrawal("12345", 10000, "JohnDoe_____________")
-    user.logout()
-    print("\n")
+#def withdrawal_insufficient_funds():
+#    print("=== Test: Withdrawal with Insufficient Funds ===")
+#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+#    user.login("john_doe", "standard")
+#    # Assuming account 12345 has less than 10000 available
+#    user.withdrawal("12345", 10000, "JohnDoe_____________")
+#    user.logout()
+#    print("\n")
 
-def transfer_same_account():
-    print("=== Test: Transfer to Same Account ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.transfer("12345", "12345", 100, "JohnDoe_____________")
-    user.logout()
-    print("\n")
+#def transfer_same_account():
+#    print("=== Test: Transfer to Same Account ===")
+#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+#    user.login("john_doe", "standard")
+#    user.transfer("12345", "12345", 100, "JohnDoe_____________")
+#    user.logout()
+#    print("\n")
 
-def delete_account_wrong_name():
-    print("=== Test: Delete Account with Mismatched Account Name ===")
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    # Provide an incorrect account name to trigger an error
-    admin.delete_account("WrongName", "12345")
-    admin.logout()
-    print("\n")
+#def delete_account_wrong_name():
+#    print("=== Test: Delete Account with Mismatched Account Name ===")
+#    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+#    admin.login("admin_user", "admin")
+#    # Provide an incorrect account name to trigger an error
+#    admin.delete_account("WrongName", "12345")
+#    admin.logout()
+#    print("\n")
 
-def disable_account_wrong_name():
-    print("=== Test: Disable Account with Mismatched Account Name ===")
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    # Provide an incorrect account name to trigger an error
-    admin.disable_account("WrongName", "12345")
-    admin.logout()
-    print("\n")
+#def disable_account_wrong_name():
+#    print("=== Test: Disable Account with Mismatched Account Name ===")
+#    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+#    admin.login("admin_user", "admin")
+#    # Provide an incorrect account name to trigger an error
+#    admin.disable_account("WrongName", "12345")
+#    admin.logout()
+#    print("\n")
 
-def valid_transfer():
-    print("=== Test: Valid Transfer ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.transfer("12345", "67890", 300, "JohnDoe_____________")
-    user.logout()
-    print("\n")
+#def valid_transfer():
+#    print("=== Test: Valid Transfer ===")
+#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+#    user.login("john_doe", "standard")
+#    user.transfer("12345", "67890", 300, "JohnDoe_____________")
+#    user.logout()
+#    print("\n")
 
-def run_tests():
-    valid_deposit()
-    withdrawal_insufficient_funds()
-    transfer_same_account()
-    delete_account_wrong_name()
-    disable_account_wrong_name()
-    valid_transfer()
+#def run_tests():
+#    valid_deposit()
+#    withdrawal_insufficient_funds()
+#    transfer_same_account()
+#    delete_account_wrong_name()
+#    disable_account_wrong_name()
+#    valid_transfer()
 
 
 # Main program
-if __name__ == "__main__":
-    """
-    The main program simulates a banking system with user and admin functionalities.
-    It allows users to perform transactions like withdrawal, transfer, bill payment,
-    and deposits. Admins can create, delete, disable accounts and change transaction plans.
-    Input: User actions (login, transactions)
-    Output: Transaction records written to daily_transaction_file.txt
-    """
+#if __name__ == "__main__":
+#    """
+#    The main program simulates a banking system with user and admin functionalities.
+#    It allows users to perform transactions like withdrawal, transfer, bill payment,
+#    and deposits. Admins can create, delete, disable accounts and change transaction plans.
+#    Input: User actions (login, transactions)
+#    Output: Transaction records written to daily_transaction_file.txt
+#    """
 
-    # Example
-    standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    standard_user.login("JohnDoe_____________", "standard")
-    standard_user.withdrawal("12345", 200, "JohnDoe_____________")
-    standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
-    standard_user.pay_bill("12345", 100, "EC", "JohnDoe_____________")
-    standard_user.deposit("12345", 600, "JohnDoe_____________")
-    standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
-    standard_user.logout()
+#    # Example
+#    #standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+#    #standard_user.login("JohnDoe_____________", "standard")
+#    #standard_user.withdrawal("12345", 200, "JohnDoe_____________")
+#    #standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
+#    #standard_user.pay_bill("12345", 100, "EC", "JohnDoe_____________")
+#    #standard_user.deposit("12345", 600, "JohnDoe_____________")
+#    #standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
+#    #standard_user.logout()
 
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    admin.create_account("EishaRizvi__________", "05452", 900, "NP")
-    admin.delete_account("JaneDoe_____________" , "67890")
-    admin.change_plan("JohnDoe_____________", "12345")
-    admin.disable_account("JohnDoe_____________", "12345")
-    admin.disable_account("EishaRizvi__________", "12345")
-    admin.change_plan("JaneDoe_____________" , "67890")
-    admin.logout()
+#    #admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+#    #admin.login("admin_user", "admin")
+#    #admin.create_account("EishaRizvi__________", "05452", 900, "NP")
+#    #admin.delete_account("JaneDoe_____________" , "67890")
+#    #admin.change_plan("JohnDoe_____________", "12345")
+#    #admin.disable_account("JohnDoe_____________", "12345")
+#    #admin.disable_account("EishaRizvi__________", "12345")
+#    #admin.change_plan("JaneDoe_____________" , "67890")
+#    #admin.logout()
 
-    print("\nExtra Tests: \n")
-    run_tests()
+#    #print("\nExtra Tests: \n")
+#    #run_tests()
