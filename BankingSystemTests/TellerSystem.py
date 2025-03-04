@@ -136,17 +136,13 @@ class User:
         if not self.is_logged_in:
             print("Error: No active session to log out from")
         return
-        # Print expected messages based on the current session
-
         print("Welcome to the banking system.")
         print("Please enter session type: standard or admin.")
         print(f"Enter account holder’s name: {self.username}")
         
         if self.session_type == "standard":
             print("Unprivileged transaction not allowed in standard mode: disable")
-            
         # Correct logout messages
-
         print("Session terminated.")
         print("Session terminated. No further transactions are allowed.")
         
@@ -575,15 +571,7 @@ if __name__ == "__main__":
     for line in sys.stdin:
         command = line.strip().split()
 
-        if not command:
-            continue  # Skip empty lines
-
-        action = command[0].lower()
-
-        if action == "login":
-            if len(command) < 3:
-                print("Error: Missing arguments for login.")
-                continue
+        if command[0].lower() == "login":
             if user and user.is_logged_in:
                 print("Error: A session is already active. Logout first.")
                 continue
@@ -593,20 +581,14 @@ if __name__ == "__main__":
             user = StandardUser(accounts_file, transaction_file) if session_type == "standard" else Admin(accounts_file, transaction_file)
             user.login(username, session_type)
 
-        elif action == "logout":
+        elif command[0].lower() == "logout":
             if user:
                 user.logout()
                 user = None
             else:
                 print("Error: No active session to log out from.")
 
-        elif action == "disable":
-            if not user or not user.is_logged_in:
-                print("Error: No active session.")
-                continue
-            if len(command) < 3:
-                print("Error: Missing arguments for disable.")
-                continue
+        elif command[0].lower() == "disable" and user and user.is_logged_in:
             if user.session_type != "admin":
                 print("Unprivileged transaction not allowed in standard mode: disable")
             else:
@@ -615,6 +597,7 @@ if __name__ == "__main__":
                 user.disable_account(account_name, account_num)
 
         # Add other transaction cases as needed
+
 
 
 #    # Example
