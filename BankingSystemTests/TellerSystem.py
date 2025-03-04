@@ -132,6 +132,20 @@ class User:
         self.read_accounts_file()
         print(f"Logged in as {username} in {session_type} mode.")
 
+    def logout(self):
+        if not self.is_logged_in:
+            print("Error: No active session to log out from")
+            return
+    
+        self.write_transaction_file()
+        self.transactions.clear()  # Ensure transactions are cleared before logout
+        self.is_logged_in = False
+
+    # Ensure correct logout messages
+    print("Session terminated.")
+    print("Session terminated. No further transactions are allowed.")
+
+
     def read_accounts_file(self):
         """
         Reads the current accounts file and loads accounts for the user.
@@ -163,18 +177,18 @@ class User:
         # Writing to daily transaction file
         with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
-                transaction_code, account_name, account_number, amount, misc = transaction.split()
+                transaction_code, account_name, account_number, amount, misc = transaction.split(maxsplit=4)
                 # Formatting each field properly
                 formatted_transaction = (
                     f"{transaction_code:<2}"
                     f"{account_name:<20}"
                     f"{int(account_number):05d}"
-                    f"{float(amount):08f}.00"
+                    f"{float(amount):08.2f}"
                     f"{misc:2}"
                 )
                 transaction_file.write(formatted_transaction + "\n")
             # Append the end-of-session transaction
-            transaction_file.write("00" + " " * 20 + "00000" + "00000000.00" + "  \n")
+            transaction_file.write("00                      00000 00000000.00\n")
         print("Transaction file updated.")
 
         # Writing to current accounts file
