@@ -132,21 +132,6 @@ class User:
         self.read_accounts_file()
         print(f"Logged in as {username} in {session_type} mode.")
 
-
-    class User:
-        def logout(self):
-            if not self.is_logged_in:
-                print("Error: No active session. Please login first.")
-            return
-            self.write_transaction_file()
-            self.transactions.clear()  # Ensure transactions are cleared before logout
-            self.is_logged_in = False
-            print("Session terminated.")
-            print("Session terminated. No further transactions are allowed.")
-
-
-
-
     def read_accounts_file(self):
         """
         Reads the current accounts file and loads accounts for the user.
