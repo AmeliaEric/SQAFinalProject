@@ -114,7 +114,7 @@ class User:
         self.accounts = []
         self.transactions = []
         self.current_accounts_file = current_accounts_file
-        self.transaction_file = transaction_file
+        self.transaction_file = sys.argv[2]  # Use command-line argument for transaction file
 
     def login(self, username, session_type):
         """
