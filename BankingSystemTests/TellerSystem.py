@@ -560,6 +560,16 @@ if __name__ == "__main__":
     Input: User actions (login, transactions)
     Output: Transaction records written to daily_transaction_file.txt
     """
+    if len(sys.argv) != 3:
+        print("Usage: python TellerSystem.py <current_accounts_file> <daily_transaction_file>")
+        sys.exit(1)
+
+    # Read input and output file names from command line arguments
+    current_accounts_file = sys.argv[1]
+    daily_transaction_file = sys.argv[2]
+
+    # Initialize a StandardUser object
+    standard_user = StandardUser(current_accounts_file, daily_transaction_file)
 
     # Example
     standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
