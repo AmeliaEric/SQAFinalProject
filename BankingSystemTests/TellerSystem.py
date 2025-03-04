@@ -115,6 +115,7 @@ class User:
         self.transactions = []
         self.current_accounts_file = current_accounts_file
         self.transaction_file = transaction_file
+        self.load_accounts()
 
     def login(self, username, session_type):
         """
@@ -134,21 +135,13 @@ class User:
 
     def logout(self):
         if not self.is_logged_in:
-            print("Error: No active session to log out from")
-        return
-        print("Welcome to the banking system.")
-        print("Please enter session type: standard or admin.")
-        print(f"Enter account holder’s name: {self.username}")
-        
-        if self.session_type == "standard":
-            print("Unprivileged transaction not allowed in standard mode: disable")
-        # Correct logout messages
+            print("Error: No active session to log out from.")
+            return
+        self.write_transaction_file()
+        self.transactions.clear()
+        self.is_logged_in = False
         print("Session terminated.")
         print("Session terminated. No further transactions are allowed.")
-        
-        self.write_transaction_file()
-        self.transactions.clear()  # Ensure transactions are cleared before logout
-        self.is_logged_in = False
 
 
     def read_accounts_file(self):
@@ -565,39 +558,33 @@ if __name__ == "__main__":
 
     accounts_file = sys.argv[1]
     transaction_file = sys.argv[2]
-
-    user = None  # No session active initially
+    user = None
 
     for line in sys.stdin:
         command = line.strip().split()
+        if not command:
+            continue
 
         if command[0].lower() == "login":
-            if user and user.is_logged_in:
-                print("Error: A session is already active. Logout first.")
+            if len(command) != 3:
+                print("Error: Missing arguments for login.")
                 continue
-
-            session_type = command[1].lower()
-            username = command[2]
-            user = StandardUser(accounts_file, transaction_file) if session_type == "standard" else Admin(accounts_file, transaction_file)
-            user.login(username, session_type)
-
+            user = User(accounts_file, transaction_file)
+            user.login(command[1], command[2])
         elif command[0].lower() == "logout":
             if user:
                 user.logout()
                 user = None
             else:
                 print("Error: No active session to log out from.")
-
-        elif command[0].lower() == "disable" and user and user.is_logged_in:
-            if user.session_type != "admin":
-                print("Unprivileged transaction not allowed in standard mode: disable")
-            else:
-                account_name = command[1]
-                account_num = command[2]
-                user.disable_account(account_name, account_num)
-
-        # Add other transaction cases as needed
-
+        elif command[0].lower() == "deposit" and user and user.is_logged_in:
+            if len(command) != 3:
+                print("Error: Missing arguments for deposit.")
+                continue
+            try:
+                user.deposit(command[1], float(command[2]))
+            except ValueError:
+                print("Error: Invalid deposit amount.")
 
 
 #    # Example
