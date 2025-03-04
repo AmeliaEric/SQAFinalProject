@@ -133,16 +133,19 @@ class User:
         print(f"Logged in as {username} in {session_type} mode.")
 
 
-    def logout(self):
-        """
-        Logs the user out of the banking system.
-        """
-        if not self.is_logged_in:
-            print("Error: No active session. Please login first.")
+    class User:
+        def logout(self):
+            if not self.is_logged_in:
+                print("Error: No active session. Please login first.")
             return
-        self.write_transaction_file()
-        self.is_logged_in = False
-        print("Session terminated.")
+            self.write_transaction_file()
+            self.transactions.clear()  # Ensure transactions are cleared before logout
+            self.is_logged_in = False
+            print("Session terminated.")
+            print("Session terminated. No further transactions are allowed.")
+
+
+
 
     def read_accounts_file(self):
         """
