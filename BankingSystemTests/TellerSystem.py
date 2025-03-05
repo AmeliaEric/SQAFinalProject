@@ -115,7 +115,6 @@ class User:
         self.transactions = []
         self.current_accounts_file = current_accounts_file
         self.transaction_file = transaction_file
-        self.load_accounts()
 
     def login(self, username, session_type):
         """
@@ -133,16 +132,17 @@ class User:
         self.read_accounts_file()
         print(f"Logged in as {username} in {session_type} mode.")
 
+
     def logout(self):
+        """
+        Logs the user out of the banking system.
+        """
         if not self.is_logged_in:
-            print("Error: No active session to log out from.")
+            print("Error: No active session. Please login first.")
             return
         self.write_transaction_file()
-        self.transactions.clear()
         self.is_logged_in = False
         print("Session terminated.")
-        print("Session terminated. No further transactions are allowed.")
-
 
     def read_accounts_file(self):
         """
@@ -175,18 +175,18 @@ class User:
         # Writing to daily transaction file
         with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
-                transaction_code, account_name, account_number, amount, misc = transaction.split(maxsplit=4)
+                transaction_code, account_name, account_number, amount, misc = transaction.split()
                 # Formatting each field properly
                 formatted_transaction = (
                     f"{transaction_code:<2}"
                     f"{account_name:<20}"
                     f"{int(account_number):05d}"
-                    f"{float(amount):08.2f}"
+                    f"{float(amount):08f}.00"
                     f"{misc:2}"
                 )
                 transaction_file.write(formatted_transaction + "\n")
             # Append the end-of-session transaction
-            transaction_file.write("00                      00000 00000000.00\n")
+            transaction_file.write("00" + " " * 20 + "00000" + "00000000.00" + "  \n")
         print("Transaction file updated.")
 
         # Writing to current accounts file
@@ -491,121 +491,95 @@ class Admin(User):
             
 
 # Extra Test Functions
-#def valid_deposit():
-#    print("=== Test: Valid Deposit ===")
-#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-#    user.login("john_doe", "standard")
-#    user.logout()
-#    print("\n")
+def valid_deposit():
+    print("=== Test: Valid Deposit ===")
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+    user.login("john_doe", "standard")
+    user.deposit("12345", 500, "JohnDoe_____________")
+    user.logout()
+    print("\n")
 
-#def withdrawal_insufficient_funds():
-#    print("=== Test: Withdrawal with Insufficient Funds ===")
-#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-#    user.login("john_doe", "standard")
-#    # Assuming account 12345 has less than 10000 available
-#    user.withdrawal("12345", 10000, "JohnDoe_____________")
-#    user.logout()
-#    print("\n")
+def withdrawal_insufficient_funds():
+    print("=== Test: Withdrawal with Insufficient Funds ===")
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+    user.login("john_doe", "standard")
+    # Assuming account 12345 has less than 10000 available
+    user.withdrawal("12345", 10000, "JohnDoe_____________")
+    user.logout()
+    print("\n")
 
-#def transfer_same_account():
-#    print("=== Test: Transfer to Same Account ===")
-#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-#    user.login("john_doe", "standard")
-#    user.transfer("12345", "12345", 100, "JohnDoe_____________")
-#    user.logout()
-#    print("\n")
+def transfer_same_account():
+    print("=== Test: Transfer to Same Account ===")
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+    user.login("john_doe", "standard")
+    user.transfer("12345", "12345", 100, "JohnDoe_____________")
+    user.logout()
+    print("\n")
 
-#def delete_account_wrong_name():
-#    print("=== Test: Delete Account with Mismatched Account Name ===")
-#    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-#    admin.login("admin_user", "admin")
-#    # Provide an incorrect account name to trigger an error
-#    admin.delete_account("WrongName", "12345")
-#    admin.logout()
-#    print("\n")
+def delete_account_wrong_name():
+    print("=== Test: Delete Account with Mismatched Account Name ===")
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+    admin.login("admin_user", "admin")
+    # Provide an incorrect account name to trigger an error
+    admin.delete_account("WrongName", "12345")
+    admin.logout()
+    print("\n")
 
-#def disable_account_wrong_name():
-#    print("=== Test: Disable Account with Mismatched Account Name ===")
-#    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-#    admin.login("admin_user", "admin")
-#    # Provide an incorrect account name to trigger an error
-#    admin.disable_account("WrongName", "12345")
-#    admin.logout()
-#    print("\n")
+def disable_account_wrong_name():
+    print("=== Test: Disable Account with Mismatched Account Name ===")
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+    admin.login("admin_user", "admin")
+    # Provide an incorrect account name to trigger an error
+    admin.disable_account("WrongName", "12345")
+    admin.logout()
+    print("\n")
 
-#def valid_transfer():
-#    print("=== Test: Valid Transfer ===")
-#    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-#    user.login("john_doe", "standard")
-#    user.transfer("12345", "67890", 300, "JohnDoe_____________")
-#    user.logout()
-#    print("\n")
+def valid_transfer():
+    print("=== Test: Valid Transfer ===")
+    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+    user.login("john_doe", "standard")
+    user.transfer("12345", "67890", 300, "JohnDoe_____________")
+    user.logout()
+    print("\n")
 
-#def run_tests():
-#    valid_deposit()
-#    withdrawal_insufficient_funds()
-#    transfer_same_account()
-#    delete_account_wrong_name()
-#    disable_account_wrong_name()
-#    valid_transfer()
+def run_tests():
+    valid_deposit()
+    withdrawal_insufficient_funds()
+    transfer_same_account()
+    delete_account_wrong_name()
+    disable_account_wrong_name()
+    valid_transfer()
 
 
 # Main program
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python3 TellerSystem.py <accounts_file> <transaction_output>")
-        sys.exit(1)
+    """
+    The main program simulates a banking system with user and admin functionalities.
+    It allows users to perform transactions like withdrawal, transfer, bill payment,
+    and deposits. Admins can create, delete, disable accounts and change transaction plans.
+    Input: User actions (login, transactions)
+    Output: Transaction records written to daily_transaction_file.txt
+    """
 
-    accounts_file = sys.argv[1]
-    transaction_file = sys.argv[2]
-    user = None
+    # Example
+    standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
+    standard_user.login("JohnDoe_____________", "standard")
+    standard_user.withdrawal("12345", 200, "JohnDoe_____________")
+    standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
+    standard_user.pay_bill("12345", 100, "EC", "JohnDoe_____________")
+    standard_user.deposit("12345", 600, "JohnDoe_____________")
+    standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
+    standard_user.logout()
 
-    for line in sys.stdin:
-        command = line.strip().split()
-        if not command:
-            continue
+    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
+    admin.login("admin_user", "admin")
+    admin.create_account("EishaRizvi__________", "05452", 900, "NP")
+    admin.delete_account("JaneDoe_____________" , "67890")
+    admin.change_plan("JohnDoe_____________", "12345")
+    admin.disable_account("JohnDoe_____________", "12345")
+    admin.disable_account("EishaRizvi__________", "12345")
+    admin.change_plan("JaneDoe_____________" , "67890")
+    admin.logout()
 
-        if command[0].lower() == "login":
-            if len(command) != 3:
-                print("Error: Missing arguments for login.")
-                continue
-            user = User(accounts_file, transaction_file)
-            user.login(command[1], command[2])
-        elif command[0].lower() == "logout":
-            if user:
-                user.logout()
-                user = None
-            else:
-                print("Error: No active session to log out from.")
-        elif command[0].lower() == "deposit" and user and user.is_logged_in:
-            if len(command) != 3:
-                print("Error: Missing arguments for deposit.")
-                continue
-            try:
-                user.deposit(command[1], float(command[2]))
-            except ValueError:
-                print("Error: Invalid deposit amount.")
-
-
-#    # Example
-#    #standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-#    #standard_user.login("JohnDoe_____________", "standard")
-#    #standard_user.withdrawal("12345", 200, "JohnDoe_____________")
-#    #standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
-#    #standard_user.pay_bill("12345", 100, "EC", "JohnDoe_____________")
-#    #standard_user.deposit("12345", 600, "JohnDoe_____________")
-#    #standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
-#    #standard_user.logout()
-
-#    #admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-#    #admin.login("admin_user", "admin")
-#    #admin.create_account("EishaRizvi__________", "05452", 900, "NP")
-#    #admin.delete_account("JaneDoe_____________" , "67890")
-#    #admin.change_plan("JohnDoe_____________", "12345")
-#    #admin.disable_account("JohnDoe_____________", "12345")
-#    #admin.disable_account("EishaRizvi__________", "12345")
-#    #admin.change_plan("JaneDoe_____________" , "67890")
-#    #admin.logout()
-
-#    #print("\nExtra Tests: \n")
-#    #run_tests()
+    print("\nExtra Tests: \n")
+    run_tests()
