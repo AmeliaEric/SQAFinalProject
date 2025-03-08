@@ -1,6 +1,1 @@
-Unknown command: standard
-Unknown command: johndoe
-Unknown command: withdraw
-Unknown command: 12345
-Unknown command: 1200.00
-Error: No active session. Please login first.
+Error: First command must be 'login'.

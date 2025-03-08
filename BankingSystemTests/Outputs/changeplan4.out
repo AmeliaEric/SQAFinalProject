@@ -1,2 +1,1 @@
-Error: This transaction requires admin access.
-Error: No active session. Please login first.
+Error: First command must be 'login'.

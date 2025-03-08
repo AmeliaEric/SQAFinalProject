@@ -1,4 +1,1 @@
-Unknown command: 54321 bobsmith___________ a 00250.00
-Unknown command: 98765 alicebrown_________ a 05000.00
-Unknown command: 11111 charlieadams_______ a 07500.00
-Unknown command: end_of_file.______________________
+Error: First command must be 'login'.

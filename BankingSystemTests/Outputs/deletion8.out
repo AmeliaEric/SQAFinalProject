@@ -1,8 +1,10 @@
-Unknown command: withdraw
+Logged in as withdraw in admin mode.
 Unknown command: janedoe
 Unknown command: 67890
 Unknown command: 200.00
 Unknown command: delete
 Unknown command: janedoe
 Unknown command: 67890
-Error: No active session. Please login first.
+Transaction file updated.
+Accounts file updated.
+Session terminated.

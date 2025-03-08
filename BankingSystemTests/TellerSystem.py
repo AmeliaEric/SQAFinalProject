@@ -162,7 +162,7 @@ class User:
                     status = line[27].strip()
                     balance = float(line[29:38].strip())
 
-                    account = Account(account_number, account_name, status, balance, "NP")
+                    account = Account(account_number, account_name, status, balance, "NP", self.current_accounts_file, self.transaction_file)
                     self.accounts.append(account)
         except FileNotFoundError:
             print("Current user accounts file not found.")
@@ -552,6 +552,7 @@ def run_tests():
     valid_transfer()
 
 def main():
+    # Check that two file arguments are provided.
     if len(sys.argv) != 3:
         print("Usage: python3 TellerSystem.py <current_accounts_file> <daily_transaction_file>")
         sys.exit(1)
@@ -559,49 +560,37 @@ def main():
     current_accounts_file = sys.argv[1]
     daily_transaction_file = sys.argv[2]
 
-    # Clear the daily transaction file before starting
+    # Clear the daily transaction file at the start of the test run.
     open(daily_transaction_file, 'w').close()
 
-    # Load accounts from the current accounts file.
-    accounts = load_accounts(current_accounts_file, daily_transaction_file)
-
-    # Read all commands from standard input (provided via the .inp file)
+    # Read all commands from standard input (provided via the .inp file).
     commands = sys.stdin.read().splitlines()
     if not commands:
         print("Error: No commands provided.")
         sys.exit(1)
-
-    # Expect at least the login command and session type
-    if len(commands) < 2:
-        print("Error: Missing session type.")
+    
+    # We expect at least three lines: "login", session type, and account holder’s name.
+    if len(commands) < 3:
+        print("Error: Missing login parameters (login, session type, account holder's name).")
         sys.exit(1)
-
-    # First command must be "login"
+    
     if commands[0].strip().lower() != "login":
         print("Error: First command must be 'login'.")
         sys.exit(1)
-
-    # Second line is the session type (for login1.inp we dont have this so we need to make error handling)
+    
     session_type = commands[1].strip().lower()
-
-    # Third line: account holder’s name (username)
-    if len(commands) < 3:
-        print("Error: Missing account holder's name.")
-        sys.exit(1)
     username = commands[2].strip()
 
-    # Create user based on session type.
+    # Create the appropriate user based on session type.
     if session_type == "admin":
-        user = Admin(accounts, daily_transaction_file)
+        user = Admin(current_accounts_file, daily_transaction_file)
     else:
-        user = StandardUser(accounts, daily_transaction_file)
-
-    # Process login – print welcome messages.
+        user = StandardUser(current_accounts_file, daily_transaction_file)
+    
+    # Call login, which (in your code) reads the accounts file.
     user.login(username, session_type)
-
-    # Process the rest of the commands.
-    # For change plan, we expect the next two lines to be account holder name and account number.
-    # Then eventually, the command "logout" will appear.
+    
+    # Process remaining commands starting after the login info.
     i = 3
     while i < len(commands):
         cmd = commands[i].strip().lower()
@@ -613,6 +602,9 @@ def main():
             account_num = commands[i+2].strip()
             user.change_plan(account_name, account_num)
             i += 3
+        elif cmd == "transfer":
+            # (Implement similar handling for transfer if needed)
+            i += 1  # Placeholder
         elif cmd == "logout":
             user.logout()
             i += 1
@@ -622,8 +614,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-""" Trial Main
-def main():
+"""def main():
     if len(sys.argv) != 3:
         print("Usage: TellerSystem.py <current_accounts_file> <transaction_file>")
         sys.exit(1)
@@ -670,17 +661,16 @@ if __name__ == "__main__":
     """
 
 # Main program
-#if __name__ == "__main__":
-    """
+"""if __name__ == "__main__":
+    
     The main program simulates a banking system with user and admin functionalities.
     It allows users to perform transactions like withdrawal, transfer, bill payment,
     and deposits. Admins can create, delete, disable accounts and change transaction plans.
     Input: User actions (login, transactions)
     Output: Transaction records written to daily_transaction_file.txt
-    """
+
 
     # Example
-    """
     standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     standard_user.login("JohnDoe_____________", "standard")
     standard_user.withdrawal("12345", 200, "JohnDoe_____________")

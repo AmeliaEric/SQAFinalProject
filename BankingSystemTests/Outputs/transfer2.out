@@ -1,2 +1,1 @@
-Unknown command: 67890
-Unknown command: 500.00
+Error: First command must be 'login'.

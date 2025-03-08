@@ -25,8 +25,8 @@ for input_file in "$INPUT_DIR"/*.inp; do
     TERMINAL_OUTPUT="$OUTPUT_DIR/$test_name.out"
 
     # Run the program and save outputs
-    python3 TellerSystem.py current_account_file.txt "$TRANSACTION_FILE" < "$input_file" > "$TERMINAL_OUTPUT"
-    echo " TellerSystem.py current_account_file.txt "$TRANSACTION_FILE" < "$input_file" > "$TERMINAL_OUTPUT""
+    python3 TellerSystem.py current_accounts_file.txt "$TRANSACTION_FILE" < "$input_file" > "$TERMINAL_OUTPUT"
+    echo " TellerSystem.py current_accounts_file.txt "$TRANSACTION_FILE" < "$input_file" > "$TERMINAL_OUTPUT""
     echo "✅ Test $test_name completed."
 done
 
