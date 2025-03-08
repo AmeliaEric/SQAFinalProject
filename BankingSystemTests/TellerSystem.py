@@ -16,14 +16,14 @@ class Account:
         current_accounts_file (str): Current accounts file.
         daily_transaction_file (str): Daily transactions file.
     """
-    def __init__(self, account_number, account_name, status, balance, transaction_plan):
+    def __init__(self, account_number, account_name, status, balance, transaction_plan, current_accounts_file, daily_transaction_file):
         self.account_number = account_number
         self.account_name = account_name
         self.status = status
         self.balance = balance
         self.transaction_plan = transaction_plan
-        self.current_accounts_file = "current_accounts_file.txt"
-        self.daily_transaction_file = "daily_transaction_file.txt"
+        self.current_accounts_file = current_accounts_file
+        self.daily_transaction_file = daily_transaction_file
         
 
     def select_transaction(self, transaction_type, amount):
@@ -396,6 +396,7 @@ class Admin(User):
             return
         new_account = Account(account_num, account_name, "A", balance, transaction_plan)
         self.accounts.append(new_account)
+        #FIX CODE BELOW TO ACCEPT DIFFERENT TRANSACTION PLANS
         transaction = f"05 {account_name:<20} {int(account_num):05d} {balance:08.2f} CA"
         self.transactions.append(transaction)
         print(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
@@ -550,9 +551,53 @@ def run_tests():
     disable_account_wrong_name()
     valid_transfer()
 
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: TellerSystem.py <current_accounts_file> <transaction_file>")
+        sys.exit(1)
+    
+    current_accounts_file = sys.argv[1]
+    transaction_file = sys.argv[2]
+    
+    # Read commands from standard input.
+    commands = sys.stdin.read().splitlines()
+    
+    if not commands:
+        print("No commands provided.")
+        sys.exit(1)
+
+    # Create an Admin or StandardUser object
+    session_type = commands[1].strip().lower()
+    if session_type == "admin":
+        user = Admin(current_accounts_file, transaction_file)
+    else:
+        user = StandardUser(current_accounts_file, transaction_file)
+    
+    # Process commands (like login, changeplan, logout)
+    i = 2  # Commands start from the third line (index 2)
+    while i < len(commands):
+        cmd = commands[i].strip().lower()
+        if cmd == "changeplan":
+            # Next two lines should be account holder name and account number
+            if i + 2 >= len(commands):
+                print("Insufficient parameters for changeplan command.")
+                break
+            account_name = commands[i+1].strip()
+            account_num = commands[i+2].strip()
+            user.change_plan(account_name, account_num)
+            i += 3  # Move to next command
+        elif cmd == "logout":
+            user.logout()
+            i += 1  # Move to next command
+        else:
+            print(f"Unknown command: {cmd}")
+            i += 1
+
+if __name__ == "__main__":
+    main()
 
 # Main program
-if __name__ == "__main__":
+#if __name__ == "__main__":
     """
     The main program simulates a banking system with user and admin functionalities.
     It allows users to perform transactions like withdrawal, transfer, bill payment,
@@ -562,6 +607,7 @@ if __name__ == "__main__":
     """
 
     # Example
+    """
     standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
     standard_user.login("JohnDoe_____________", "standard")
     standard_user.withdrawal("12345", 200, "JohnDoe_____________")
@@ -582,4 +628,4 @@ if __name__ == "__main__":
     admin.logout()
 
     print("\nExtra Tests: \n")
-    run_tests()
+    run_tests()"""

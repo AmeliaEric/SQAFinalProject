@@ -1,78 +1,11 @@
-Logged in as JohnDoe_____________ in standard mode.
-Error: Cannot withdraw from a disabled account.
-Account 67890 not found.
-Error: Cannot transfer from a disabled account.
-Account 12345 is disabled. Transaction cannot proceed.
-Transaction failed due to validation error.
-Error: Cannot deposit into a disabled account.
-Account 12345 is disabled. Transaction cannot proceed.
-Transaction failed due to validation error.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-Logged in as admin_user in admin mode.
-Error: Account number already in use.
-Account 67890 not found.
-Error: Account does not exist.
-Error: Cannot change plan for a disabled account.
-Error: Account already disabled.
-Error: Account holder name does not match account number.
-Account 67890 not found.
-Error: Account does not exist.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-Extra Tests: 
-
-=== Test: Valid Deposit ===
-Logged in as john_doe in standard mode.
-Error: Cannot deposit into a disabled account.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
-=== Test: Withdrawal with Insufficient Funds ===
-Logged in as john_doe in standard mode.
-Error: Withdrawal amount exceeds the $1000.0 limit.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
-=== Test: Transfer to Same Account ===
-Logged in as john_doe in standard mode.
-Error: Cannot transfer from a disabled account.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
-=== Test: Delete Account with Mismatched Account Name ===
-Logged in as admin_user in admin mode.
-Account name for the account number given: JohnDoe_____________
-Account name inputed: WrongName
-Error: Account holder name does not match account number.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
-=== Test: Disable Account with Mismatched Account Name ===
-Logged in as admin_user in admin mode.
-Error: Account holder name does not match account number.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
-=== Test: Valid Transfer ===
-Logged in as john_doe in standard mode.
-Account 67890 not found.
-Error: Cannot transfer from a disabled account.
-Transaction file updated.
-Accounts file updated.
-Session terminated.
-
-
+Unknown command: delete
+Unknown command: alicebrown
+Unknown command: 98765
+Error: No active session. Please login first.
+Unknown command: login
+Unknown command: admin
+Unknown command: withdraw
+Unknown command: alicebrown
+Unknown command: 98765
+Unknown command: 100.00
+Error: No active session. Please login first.

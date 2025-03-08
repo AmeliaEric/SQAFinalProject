@@ -1,83 +1,83 @@
 Test Case, Expected Output, Actual Output, Difference
-changeplan1, ExpectedOutput/changeplan1.etf, Outputs/changeplan1.bto, Differences found
-changeplan2, ExpectedOutput/changeplan2.etf, Outputs/changeplan2.bto, Differences found
-changeplan3, ExpectedOutput/changeplan3.etf, Outputs/changeplan3.bto, Differences found
-changeplan4, ExpectedOutput/changeplan4.etf, Outputs/changeplan4.bto, Differences found
-changeplan5, ExpectedOutput/changeplan5.etf, Outputs/changeplan5.bto, Differences found
-changeplan6, ExpectedOutput/changeplan6.etf, Outputs/changeplan6.bto, Differences found
-changeplan7, ExpectedOutput/changeplan7.etf, Outputs/changeplan7.bto, Differences found
-changeplan8, ExpectedOutput/changeplan8.etf, Outputs/changeplan8.bto, Differences found
-changeplan9, ExpectedOutput/changeplan9.etf, Outputs/changeplan9.bto, Differences found
-creation1, ExpectedOutput/creation1.etf, Outputs/creation1.bto, Differences found
-creation2, ExpectedOutput/creation2.etf, Outputs/creation2.bto, Differences found
-creation3, ExpectedOutput/creation3.etf, Outputs/creation3.bto, Differences found
-creation4, ExpectedOutput/creation4.etf, Outputs/creation4.bto, Differences found
-creation5, ExpectedOutput/creation5.etf, Outputs/creation5.bto, Differences found
-creation6, ExpectedOutput/creation6.etf, Outputs/creation6.bto, Differences found
-creation7, ExpectedOutput/creation7.etf, Outputs/creation7.bto, Differences found
-creation8, ExpectedOutput/creation8.etf, Outputs/creation8.bto, Differences found
-deletion1, ExpectedOutput/deletion1.etf, Outputs/deletion1.bto, Differences found
-deletion2, ExpectedOutput/deletion2.etf, Outputs/deletion2.bto, Differences found
-deletion3, ExpectedOutput/deletion3.etf, Outputs/deletion3.bto, Differences found
-deletion4, ExpectedOutput/deletion4.etf, Outputs/deletion4.bto, Differences found
-deletion5, ExpectedOutput/deletion5.etf, Outputs/deletion5.bto, Differences found
-deletion6, ExpectedOutput/deletion6.etf, Outputs/deletion6.bto, Differences found
-deletion7, ExpectedOutput/deletion7.etf, Outputs/deletion7.bto, Differences found
-deletion8, ExpectedOutput/deletion8.etf, Outputs/deletion8.bto, Differences found
-deposit1, ExpectedOutput/deposit1.etf, Outputs/deposit1.bto, Differences found
-deposit2, ExpectedOutput/deposit2.etf, Outputs/deposit2.bto, Differences found
-deposit3, ExpectedOutput/deposit3.etf, Outputs/deposit3.bto, Differences found
-deposit4, ExpectedOutput/deposit4.etf, Outputs/deposit4.bto, Differences found
-deposit5, ExpectedOutput/deposit5.etf, Outputs/deposit5.bto, Differences found
-deposit6, ExpectedOutput/deposit6.etf, Outputs/deposit6.bto, Differences found
-deposit7, ExpectedOutput/deposit7.etf, Outputs/deposit7.bto, Differences found
-disable1, ExpectedOutput/disable1.etf, Outputs/disable1.bto, Differences found
-disable10, ExpectedOutput/disable10.etf, Outputs/disable10.bto, Differences found
-disable2, ExpectedOutput/disable2.etf, Outputs/disable2.bto, Differences found
-disable3, ExpectedOutput/disable3.etf, Outputs/disable3.bto, Differences found
-disable4, ExpectedOutput/disable4.etf, Outputs/disable4.bto, Differences found
-disable5, ExpectedOutput/disable5.etf, Outputs/disable5.bto, Differences found
-disable6, ExpectedOutput/disable6.etf, Outputs/disable6.bto, Differences found
-disable7, ExpectedOutput/disable7.etf, Outputs/disable7.bto, Differences found
-disable8, ExpectedOutput/disable8.etf, Outputs/disable8.bto, Differences found
-disable9, ExpectedOutput/disable9.etf, Outputs/disable9.bto, Differences found
-login1, ExpectedOutput/login1.etf, Outputs/login1.bto, Differences found
-login2, ExpectedOutput/login2.etf, Outputs/login2.bto, Differences found
-login3, ExpectedOutput/login3.etf, Outputs/login3.bto, Differences found
-login4, ExpectedOutput/login4.etf, Outputs/login4.bto, Differences found
-login5, ExpectedOutput/login5.etf, Outputs/login5.bto, Differences found
-login6, ExpectedOutput/login6.etf, Outputs/login6.bto, Differences found
-login7, ExpectedOutput/login7.etf, Outputs/login7.bto, Differences found
-login8, ExpectedOutput/login8.etf, Outputs/login8.bto, Differences found
-login9, ExpectedOutput/login9.etf, Outputs/login9.bto, Differences found
-logout1, ExpectedOutput/logout1.etf, Outputs/logout1.bto, Differences found
-logout2, ExpectedOutput/logout2.etf, Outputs/logout2.bto, Differences found
-logout3, ExpectedOutput/logout3.etf, Outputs/logout3.bto, Differences found
-logout4, ExpectedOutput/logout4.etf, Outputs/logout4.bto, Differences found
-paybill1, ExpectedOutput/paybill1.etf, Outputs/paybill1.bto, Differences found
-paybill2, ExpectedOutput/paybill2.etf, Outputs/paybill2.bto, Differences found
-paybill3, ExpectedOutput/paybill3.etf, Outputs/paybill3.bto, Differences found
-paybill4, ExpectedOutput/paybill4.etf, Outputs/paybill4.bto, Differences found
-paybill5, ExpectedOutput/paybill5.etf, Outputs/paybill5.bto, Differences found
-paybill6, ExpectedOutput/paybill6.etf, Outputs/paybill6.bto, Differences found
-paybill7, ExpectedOutput/paybill7.etf, Outputs/paybill7.bto, Differences found
-paybill8, ExpectedOutput/paybill8.etf, Outputs/paybill8.bto, Differences found
-paybill9, ExpectedOutput/paybill9.etf, Outputs/paybill9.bto, Differences found
-transfer1, ExpectedOutput/transfer1.etf, Outputs/transfer1.bto, Differences found
-transfer2, ExpectedOutput/transfer2.etf, Outputs/transfer2.bto, Differences found
-transfer3, ExpectedOutput/transfer3.etf, Outputs/transfer3.bto, Differences found
-transfer4, ExpectedOutput/transfer4.etf, Outputs/transfer4.bto, Differences found
-transfer5, ExpectedOutput/transfer5.etf, Outputs/transfer5.bto, Differences found
-transfer6, ExpectedOutput/transfer6.etf, Outputs/transfer6.bto, Differences found
-transfer7, ExpectedOutput/transfer7.etf, Outputs/transfer7.bto, Differences found
-transfer8, ExpectedOutput/transfer8.etf, Outputs/transfer8.bto, Differences found
-transfer9, ExpectedOutput/transfer9.etf, Outputs/transfer9.bto, Differences found
-withdrawal1, ExpectedOutput/withdrawal1.etf, Outputs/withdrawal1.bto, Differences found
-withdrawal2, ExpectedOutput/withdrawal2.etf, Outputs/withdrawal2.bto, Differences found
-withdrawal3, ExpectedOutput/withdrawal3.etf, Outputs/withdrawal3.bto, Differences found
-withdrawal4, ExpectedOutput/withdrawal4.etf, Outputs/withdrawal4.bto, Differences found
-withdrawal5, ExpectedOutput/withdrawal5.etf, Outputs/withdrawal5.bto, Differences found
-withdrawal6, ExpectedOutput/withdrawal6.etf, Outputs/withdrawal6.bto, Differences found
-withdrawal7, ExpectedOutput/withdrawal7.etf, Outputs/withdrawal7.bto, Differences found
-withdrawal8, ExpectedOutput/withdrawal8.etf, Outputs/withdrawal8.bto, Differences found
-withdrawal9, ExpectedOutput/withdrawal9.etf, Outputs/withdrawal9.bto, Differences found
+changeplan1, See ExpectedTransaction/changeplan1.etf, See Outputs/changeplan1.atf, Differences found
+changeplan2, See ExpectedTransaction/changeplan2.etf, See Outputs/changeplan2.atf, Differences found
+changeplan3, See ExpectedTransaction/changeplan3.etf, See Outputs/changeplan3.atf, Differences found
+changeplan4, See ExpectedTransaction/changeplan4.etf, See Outputs/changeplan4.atf, Differences found
+changeplan5, See ExpectedTransaction/changeplan5.etf, See Outputs/changeplan5.atf, Differences found
+changeplan6, See ExpectedTransaction/changeplan6.etf, See Outputs/changeplan6.atf, Differences found
+changeplan7, See ExpectedTransaction/changeplan7.etf, See Outputs/changeplan7.atf, Differences found
+changeplan8, See ExpectedTransaction/changeplan8.etf, See Outputs/changeplan8.atf, Differences found
+changeplan9, See ExpectedTransaction/changeplan9.etf, See Outputs/changeplan9.atf, Differences found
+creation1, See ExpectedTransaction/creation1.etf, See Outputs/creation1.atf, Differences found
+creation2, See ExpectedTransaction/creation2.etf, See Outputs/creation2.atf, Differences found
+creation3, See ExpectedTransaction/creation3.etf, See Outputs/creation3.atf, Differences found
+creation4, See ExpectedTransaction/creation4.etf, See Outputs/creation4.atf, Differences found
+creation5, See ExpectedTransaction/creation5.etf, See Outputs/creation5.atf, Differences found
+creation6, See ExpectedTransaction/creation6.etf, See Outputs/creation6.atf, Differences found
+creation7, See ExpectedTransaction/creation7.etf, See Outputs/creation7.atf, Differences found
+creation8, See ExpectedTransaction/creation8.etf, See Outputs/creation8.atf, Differences found
+deletion1, See ExpectedTransaction/deletion1.etf, See Outputs/deletion1.atf, Differences found
+deletion2, See ExpectedTransaction/deletion2.etf, See Outputs/deletion2.atf, Differences found
+deletion3, See ExpectedTransaction/deletion3.etf, See Outputs/deletion3.atf, Differences found
+deletion4, See ExpectedTransaction/deletion4.etf, See Outputs/deletion4.atf, Differences found
+deletion5, See ExpectedTransaction/deletion5.etf, See Outputs/deletion5.atf, Differences found
+deletion6, See ExpectedTransaction/deletion6.etf, See Outputs/deletion6.atf, Differences found
+deletion7, See ExpectedTransaction/deletion7.etf, See Outputs/deletion7.atf, Differences found
+deletion8, See ExpectedTransaction/deletion8.etf, See Outputs/deletion8.atf, Differences found
+deposit1, See ExpectedTransaction/deposit1.etf, See Outputs/deposit1.atf, Differences found
+deposit2, See ExpectedTransaction/deposit2.etf, See Outputs/deposit2.atf, Differences found
+deposit3, See ExpectedTransaction/deposit3.etf, See Outputs/deposit3.atf, Differences found
+deposit4, See ExpectedTransaction/deposit4.etf, See Outputs/deposit4.atf, Differences found
+deposit5, See ExpectedTransaction/deposit5.etf, See Outputs/deposit5.atf, Differences found
+deposit6, See ExpectedTransaction/deposit6.etf, See Outputs/deposit6.atf, Differences found
+deposit7, See ExpectedTransaction/deposit7.etf, See Outputs/deposit7.atf, Differences found
+disable1, See ExpectedTransaction/disable1.etf, See Outputs/disable1.atf, Differences found
+disable10, See ExpectedTransaction/disable10.etf, See Outputs/disable10.atf, Differences found
+disable2, See ExpectedTransaction/disable2.etf, See Outputs/disable2.atf, Differences found
+disable3, See ExpectedTransaction/disable3.etf, See Outputs/disable3.atf, Differences found
+disable4, See ExpectedTransaction/disable4.etf, See Outputs/disable4.atf, Differences found
+disable5, See ExpectedTransaction/disable5.etf, See Outputs/disable5.atf, Differences found
+disable6, See ExpectedTransaction/disable6.etf, See Outputs/disable6.atf, Differences found
+disable7, See ExpectedTransaction/disable7.etf, See Outputs/disable7.atf, Differences found
+disable8, See ExpectedTransaction/disable8.etf, See Outputs/disable8.atf, Differences found
+disable9, See ExpectedTransaction/disable9.etf, See Outputs/disable9.atf, Differences found
+login1, See ExpectedTransaction/login1.etf, See Outputs/login1.atf, Differences found
+login2, See ExpectedTransaction/login2.etf, See Outputs/login2.atf, Differences found
+login3, See ExpectedTransaction/login3.etf, See Outputs/login3.atf, Differences found
+login4, See ExpectedTransaction/login4.etf, See Outputs/login4.atf, Differences found
+login5, See ExpectedTransaction/login5.etf, See Outputs/login5.atf, Differences found
+login6, See ExpectedTransaction/login6.etf, See Outputs/login6.atf, Differences found
+login7, See ExpectedTransaction/login7.etf, See Outputs/login7.atf, Differences found
+login8, See ExpectedTransaction/login8.etf, See Outputs/login8.atf, Differences found
+login9, See ExpectedTransaction/login9.etf, See Outputs/login9.atf, Differences found
+logout1, See ExpectedTransaction/logout1.etf, See Outputs/logout1.atf, Differences found
+logout2, See ExpectedTransaction/logout2.etf, See Outputs/logout2.atf, Differences found
+logout3, See ExpectedTransaction/logout3.etf, See Outputs/logout3.atf, Differences found
+logout4, See ExpectedTransaction/logout4.etf, See Outputs/logout4.atf, Differences found
+paybill1, See ExpectedTransaction/paybill1.etf, See Outputs/paybill1.atf, Differences found
+paybill2, See ExpectedTransaction/paybill2.etf, See Outputs/paybill2.atf, Differences found
+paybill3, See ExpectedTransaction/paybill3.etf, See Outputs/paybill3.atf, Differences found
+paybill4, See ExpectedTransaction/paybill4.etf, See Outputs/paybill4.atf, Differences found
+paybill5, See ExpectedTransaction/paybill5.etf, See Outputs/paybill5.atf, Differences found
+paybill6, See ExpectedTransaction/paybill6.etf, See Outputs/paybill6.atf, Differences found
+paybill7, See ExpectedTransaction/paybill7.etf, See Outputs/paybill7.atf, Differences found
+paybill8, See ExpectedTransaction/paybill8.etf, See Outputs/paybill8.atf, Differences found
+paybill9, See ExpectedTransaction/paybill9.etf, See Outputs/paybill9.atf, Differences found
+transfer1, See ExpectedTransaction/transfer1.etf, See Outputs/transfer1.atf, Differences found
+transfer2, See ExpectedTransaction/transfer2.etf, See Outputs/transfer2.atf, Differences found
+transfer3, See ExpectedTransaction/transfer3.etf, See Outputs/transfer3.atf, Differences found
+transfer4, See ExpectedTransaction/transfer4.etf, See Outputs/transfer4.atf, Differences found
+transfer5, See ExpectedTransaction/transfer5.etf, See Outputs/transfer5.atf, Differences found
+transfer6, See ExpectedTransaction/transfer6.etf, See Outputs/transfer6.atf, Differences found
+transfer7, See ExpectedTransaction/transfer7.etf, See Outputs/transfer7.atf, Differences found
+transfer8, See ExpectedTransaction/transfer8.etf, See Outputs/transfer8.atf, Differences found
+transfer9, See ExpectedTransaction/transfer9.etf, See Outputs/transfer9.atf, Differences found
+withdrawal1, See ExpectedTransaction/withdrawal1.etf, See Outputs/withdrawal1.atf, Differences found
+withdrawal2, See ExpectedTransaction/withdrawal2.etf, See Outputs/withdrawal2.atf, Differences found
+withdrawal3, See ExpectedTransaction/withdrawal3.etf, See Outputs/withdrawal3.atf, Differences found
+withdrawal4, See ExpectedTransaction/withdrawal4.etf, See Outputs/withdrawal4.atf, Differences found
+withdrawal5, See ExpectedTransaction/withdrawal5.etf, See Outputs/withdrawal5.atf, Differences found
+withdrawal6, See ExpectedTransaction/withdrawal6.etf, See Outputs/withdrawal6.atf, Differences found
+withdrawal7, See ExpectedTransaction/withdrawal7.etf, See Outputs/withdrawal7.atf, Differences found
+withdrawal8, See ExpectedTransaction/withdrawal8.etf, See Outputs/withdrawal8.atf, Differences found
+withdrawal9, See ExpectedTransaction/withdrawal9.etf, See Outputs/withdrawal9.atf, Differences found
