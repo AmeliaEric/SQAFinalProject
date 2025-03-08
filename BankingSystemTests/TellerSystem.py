@@ -553,6 +553,78 @@ def run_tests():
 
 def main():
     if len(sys.argv) != 3:
+        print("Usage: python3 TellerSystem.py <current_accounts_file> <daily_transaction_file>")
+        sys.exit(1)
+    
+    current_accounts_file = sys.argv[1]
+    daily_transaction_file = sys.argv[2]
+
+    # Clear the daily transaction file before starting
+    open(daily_transaction_file, 'w').close()
+
+    # Load accounts from the current accounts file.
+    accounts = load_accounts(current_accounts_file, daily_transaction_file)
+
+    # Read all commands from standard input (provided via the .inp file)
+    commands = sys.stdin.read().splitlines()
+    if not commands:
+        print("Error: No commands provided.")
+        sys.exit(1)
+
+    # Expect at least the login command and session type
+    if len(commands) < 2:
+        print("Error: Missing session type.")
+        sys.exit(1)
+
+    # First command must be "login"
+    if commands[0].strip().lower() != "login":
+        print("Error: First command must be 'login'.")
+        sys.exit(1)
+
+    # Second line is the session type (for login1.inp we dont have this so we need to make error handling)
+    session_type = commands[1].strip().lower()
+
+    # Third line: account holder’s name (username)
+    if len(commands) < 3:
+        print("Error: Missing account holder's name.")
+        sys.exit(1)
+    username = commands[2].strip()
+
+    # Create user based on session type.
+    if session_type == "admin":
+        user = Admin(accounts, daily_transaction_file)
+    else:
+        user = StandardUser(accounts, daily_transaction_file)
+
+    # Process login – print welcome messages.
+    user.login(username, session_type)
+
+    # Process the rest of the commands.
+    # For change plan, we expect the next two lines to be account holder name and account number.
+    # Then eventually, the command "logout" will appear.
+    i = 3
+    while i < len(commands):
+        cmd = commands[i].strip().lower()
+        if cmd == "changeplan":
+            if i + 2 >= len(commands):
+                print("Error: Missing parameters for changeplan command.")
+                break
+            account_name = commands[i+1].strip()
+            account_num = commands[i+2].strip()
+            user.change_plan(account_name, account_num)
+            i += 3
+        elif cmd == "logout":
+            user.logout()
+            i += 1
+        else:
+            print(f"Unknown command: {cmd}")
+            i += 1
+
+if __name__ == "__main__":
+    main()
+""" Trial Main
+def main():
+    if len(sys.argv) != 3:
         print("Usage: TellerSystem.py <current_accounts_file> <transaction_file>")
         sys.exit(1)
     
@@ -595,6 +667,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+    """
 
 # Main program
 #if __name__ == "__main__":
