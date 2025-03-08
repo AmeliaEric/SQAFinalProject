@@ -18,7 +18,7 @@ echo "Starting tests..."
 # Run the program on each input file
 for input_file in "$INPUT_DIR"/*.inp; do
     test_name=$(basename "$input_file" .inp)  # Extract test name without extension
-    echo "\n🔄 Running test: $test_name"
+    echo "🔄 Running test: $test_name"
 
     # Define output files
     TRANSACTION_FILE="$OUTPUT_DIR/$test_name.atf"
