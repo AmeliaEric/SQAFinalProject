@@ -1,6 +1,5 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Logged in as admin in admin mode.
+Enter session type: standard or admin.
 Account 67890 not found.
 Error: Account does not exist.
 Transaction file updated.

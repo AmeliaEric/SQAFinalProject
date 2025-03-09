@@ -1,6 +1,5 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Logged in as admin in admin mode.
+Enter session type: standard or admin.
 Error: Account holder name does not match account number.
 Unknown command: deposit $500
 Transaction file updated.

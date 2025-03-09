@@ -1,8 +1,7 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Logged in as JohnDoe in standard mode.
+Enter session type: standard or admin.
 Account 99999 not found.
-Error: Account does not exist.
+Error: Invalid account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

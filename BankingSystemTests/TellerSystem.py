@@ -130,7 +130,7 @@ class User:
         self.session_type = session_type
         self.is_logged_in = True
         self.read_accounts_file()
-        print(f"Logged in as {username} in {session_type} mode.")
+        #print(f"Logged in as {username} in {session_type} mode.")
 
 
     def logout(self):
@@ -189,7 +189,7 @@ class User:
                     print("Error formatting transaction:", transaction, "Error:", e)
                     continue
                 transaction_file.write(formatted_transaction + "\n")
-                transaction_file.write("00" + " " + " " * 20 + " " + "00000" + " " + "00000000.00" + "  \n")
+                transaction_file.write("00 00000 00000.00\n")
         print("Transaction file updated.")
                 
         with open(self.current_accounts_file, "w") as accounts_file:
@@ -240,8 +240,6 @@ class StandardUser(User):
             print("Error: Account does not exist.")
             return
         if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
             print("Error: Account holder name does not match account number.")
             return
         if account:
@@ -259,7 +257,8 @@ class StandardUser(User):
                 print("Error: Withdrawal amount must be positive.")
                 return
             if account:
-                transaction = f"01 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
+                account.balance -= amount
+                transaction = f"WITHDRAWAL {account_num} {amount:.2f}"
                 self.transactions.append(transaction)
                 transaction_msg = account.select_transaction(1, amount)
                 print(transaction_msg)
@@ -271,41 +270,41 @@ class StandardUser(User):
         if not self.is_logged_in:
             print("Error: No active session. Please login first.")
             return
-        account = self.find_account(from_acc)
-        if not account:
-            print("Error: Account does not exist.")
+        from_account = self.find_account(from_acc)
+        if not from_account:
+            print("Error: Invalid account number.")
             return
-        if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
+        if from_account.account_name != account_name:
             print("Error: Account holder name does not match account number.")
             return
-        if account:
-            if amount > self.max_transfer_limit:
-                print("Error: Transfer amount exceeds ${self.max_transfer_limit} limit.")
-                return
-            from_account = self.find_account(from_acc)
-            to_account = self.find_account(to_acc)
-            if from_account.status == "D":
-                print("Error: Cannot transfer from a disabled account.")
-                return
-            if from_account.balance < amount:
-                print("Error: Insufficient funds.")
-                return
-            if from_account.account_number == to_account.account_number:
-                print("Error: Cannot transfer to the same account.")
-                return
-            if amount == 0:
-                print("Error: Transfer amount must be greater than zero.")
-                return
-            if amount < 0:
-                print("Error: Transfer amount must be positive.")
-                return
-            if from_account and to_account:
-                transaction = f"02 {account_name:<20} {int(from_acc):05d} {amount:08.2f} --"
-                self.transactions.append(transaction)
-                transaction_msg = from_account.select_transaction(2, amount)
-                print(transaction_msg)
+        to_account = self.find_account(to_acc)
+        if not to_account:
+            print("Error: Invalid recipient account number.")
+            return
+        if from_account.status == "D":
+            print("Error: Cannot transfer from a disabled account.")
+            return
+        if amount > self.max_transfer_limit:
+            print(f"Error: Transfer amount exceeds the ${self.max_transfer_limit:.2f} limit.")
+            return
+        if from_account.balance < amount:
+            print("Error: Insufficient funds.")
+            return
+        if from_account.account_number == to_account.account_number:
+            print("Error: Cannot transfer to the same account.")
+            return
+        if amount < 0:
+            print("Error: Transfer amount must be positive.")
+            return
+        if amount == 0:
+            print("Error: Transfer amount must be greater than zero.")
+            return
+        from_account.balance -= amount
+        to_account.balance += amount
+        transaction = f"TRANSFER {from_acc} {to_acc} {amount:.2f}"
+        self.transactions.append(transaction)
+        print("Transfer successful.")
+
 
     def pay_bill(self, account_num, amount, company, account_name):
         """
@@ -343,28 +342,27 @@ class StandardUser(User):
             return
         account = self.find_account(account_num)
         if not account:
-            print("Error: Account does not exist.")
+            print("Error: Invalid account number.")
             return
         if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
             print("Error: Account holder name does not match account number.")
             return
-        if account:
-            if account.status == "D":
-                print("Error: Cannot deposit into a disabled account.")
-                return
-            if amount == 0:
-                print("Error: Deposit amount must be greater than zero.")
-                return
-            if amount < 0:
-                print("Error: Deposit amount must be positive.")
-                return
-            if account:
-                transaction = f"04 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
-                self.transactions.append(transaction)
-                transaction_msg = account.select_transaction(4, amount)
-                print(transaction_msg)
+        if account.status == "D":
+            print("Error: Cannot deposit into a disabled account.")
+            return
+        if amount > self.max_deposit_limit:
+            print(f"Error: Deposit amount exceeds the ${self.max_deposit_limit:.2f} limit.")
+            return
+        if amount < 0:
+            print("Error: Deposit amount must be positive.")
+            return
+        if amount == 0:
+            print("Error: Deposit amount must be greater than zero.")
+            return
+        account.balance += amount
+        transaction = f"DEPOSIT {account.account_number} {amount:.2f}"
+        self.transactions.append(transaction)
+        print("Deposit successful.")
 
 
 class Admin(User):
@@ -401,9 +399,7 @@ class Admin(User):
             return
         new_account = Account(account_num, account_name, "A", balance, transaction_plan)
         self.accounts.append(new_account)
-        #FIX CODE BELOW TO ACCEPT DIFFERENT TRANSACTION PLANS
-        transaction = f"05 {account_name:<20} {int(account_num):05d} {balance:08.2f} CA"
-        self.transactions.append(transaction)
+        self.transactions.append(f"CREATE {account_num} {balance:.2f} {transaction_plan}")
         print(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
 
     def delete_account(self, account_name, account_num):
@@ -575,19 +571,21 @@ def main():
     
     # Always print the welcome message and prompt
     print("Welcome to the banking system.")
-    print("Please enter session type: standard or admin.")
+    print("Enter session type: standard or admin.")
 
     # Check if session type is missing (or blank)
     if len(lines) < 2 or lines[1].strip() == "":
         with open(transaction_file, "w") as tf:
-            tf.write("00" + " " * 20 + "0000000000000.00")
+            tf.write("00 00000 00000.00")
         print("Transaction file updated.")
         sys.exit(0)
 
 
     # First line must be 'login'
     if lines[0].lower() != "login":
-        print("Error: Expected 'login' as the first command.")
+        print("Error: No active session. Please login first.")
+        with open(transaction_file, "w") as tf:
+            tf.write("00 00000 00000.00")
         sys.exit(1)
 
     session_type = lines[1].lower()
@@ -674,7 +672,7 @@ def main():
         # For standard users, the next line must be the account holder's name.
         if len(lines) < 3 or lines[2].strip() == "":
             with open(transaction_file, "w") as tf:
-                tf.write("00" + " " * 20 + "0000000000000.00")
+                tf.write("00 00000 00000.00")
             print("Transaction file updated.")
             sys.exit(0)
         account_name = lines[2]
@@ -687,17 +685,24 @@ def main():
             current_index += 1
 
             if command == "deposit":
-                # Expected: account_num, amount
-                if current_index + 1 >= len(lines):
+                if current_index >= len(lines):
                     print("Error: Insufficient arguments for deposit command.")
                     break
                 account_num = lines[current_index]
-                try:
-                    amount = float(lines[current_index + 1])
-                except ValueError:
-                    print("Error: Invalid amount for deposit.")
+                print(f"Enter deposit account number: {account_num}")
+                current_index += 1
+                if current_index >= len(lines):
+                    print("Error: Insufficient arguments for deposit command.")
                     break
-                current_index += 2
+                amount_str = lines[current_index]
+                print(f"Enter amount to deposit: {amount_str}")
+                try:
+                    amount = float(amount_str)
+                except ValueError:
+                    print("Error: Invalid deposit amount format.")
+                    current_index += 1
+                    continue
+                current_index += 1
                 user.deposit(account_num, amount, account_name)
 
             elif command == "withdrawal":

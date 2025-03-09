@@ -1,6 +1,5 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Logged in as admin in admin mode.
+Enter session type: standard or admin.
 Account name for the account number given: BobSmith____________
 Account name inputed: ""
 Error: Account holder name does not match account number.

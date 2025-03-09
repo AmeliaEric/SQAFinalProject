@@ -1,6 +1,5 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Logged in as JaneDoe in standard mode.
+Enter session type: standard or admin.
 Unknown command: withdraw
 Unknown command: 67890
 Unknown command: 200.00
