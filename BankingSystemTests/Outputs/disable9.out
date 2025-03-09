@@ -1,7 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Account holder name does not match account number.
-Error: Account holder name does not match account number.
+Error: Account already disabled.
+Error: Account already disabled.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

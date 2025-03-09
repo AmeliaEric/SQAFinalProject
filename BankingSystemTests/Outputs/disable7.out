@@ -1,6 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Account holder name does not match account number.
+Error: Account already disabled.
 Unknown command: deposit $500
 Transaction file updated.
 Accounts file updated.
