@@ -189,7 +189,7 @@ class User:
                     print("Error formatting transaction:", transaction, "Error:", e)
                     continue
                 transaction_file.write(formatted_transaction + "\n")
-                transaction_file.write("00 00000 00000.00\n")
+            transaction_file.write("00 00000 00000.00\n")
         print("Transaction file updated.")
                 
         with open(self.current_accounts_file, "w") as accounts_file:

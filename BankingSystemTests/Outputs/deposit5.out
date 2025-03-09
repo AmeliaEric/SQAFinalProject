@@ -1,6 +1,8 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Invalid amount for deposit.
+Enter deposit account number: 12345
+Enter amount to deposit: 500.abc
+Error: Invalid deposit amount format.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
