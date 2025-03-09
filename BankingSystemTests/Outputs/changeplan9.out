@@ -1,7 +1,6 @@
-Logged in as changeplan in admin mode.
-Unknown command: disableduser
-Unknown command: 99999
+Logged in as admin in admin mode.
+Account 99999 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: 

@@ -1,8 +1,6 @@
-Logged in as disable in admin mode.
-Unknown command: johndoe
-Unknown command: 12345
+Logged in as admin in admin mode.
+Error: Account holder name does not match account number.
 Unknown command: deposit $500
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: 

@@ -1,1 +1,1 @@
-Error: First command must be 'login'.
+Error: Expected 'login' as the first command.

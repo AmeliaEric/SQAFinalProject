@@ -1,9 +1,5 @@
-Logged in as paybill in admin mode.
-Unknown command: johndoe
-Unknown command: 12345
-Unknown command: 500.00
-Unknown command: unacceptable company
+Logged in as admin in admin mode.
+Error: Admin users are not permitted to perform transaction commands.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: 

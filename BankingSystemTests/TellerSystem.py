@@ -161,8 +161,9 @@ class User:
                     account_name = line[6:26].strip()
                     status = line[27].strip()
                     balance = float(line[29:38].strip())
+                    transaction_plan = line[39:].strip()
 
-                    account = Account(account_number, account_name, status, balance, "NP", self.current_accounts_file, self.transaction_file)
+                    account = Account(account_number, account_name, status, balance, transaction_plan, self.current_accounts_file, self.transaction_file)
                     self.accounts.append(account)
         except FileNotFoundError:
             print("Current user accounts file not found.")
@@ -552,68 +553,191 @@ def run_tests():
     valid_transfer()
 
 def main():
-    # Check that two file arguments are provided.
-    if len(sys.argv) != 3:
-        print("Usage: python3 TellerSystem.py <current_accounts_file> <daily_transaction_file>")
-        sys.exit(1)
-    
+    if len(sys.argv) < 3:
+        print("Usage: python TellerSystem.py <current_accounts_file> <transaction_file>")
+        return
+
     current_accounts_file = sys.argv[1]
-    daily_transaction_file = sys.argv[2]
+    transaction_file = sys.argv[2]
 
-    # Clear the daily transaction file at the start of the test run.
-    open(daily_transaction_file, 'w').close()
+    # Read all non-empty lines from input (provided via the .inp file)
+    lines = [line.strip() for line in sys.stdin if line.strip() != '']
+    if not lines:
+        print("No input provided.")
+        return
 
-    # Read all commands from standard input (provided via the .inp file).
-    commands = sys.stdin.read().splitlines()
-    if not commands:
-        print("Error: No commands provided.")
-        sys.exit(1)
-    
-    # We expect at least three lines: "login", session type, and account holder’s name.
-    if len(commands) < 3:
-        print("Error: Missing login parameters (login, session type, account holder's name).")
-        sys.exit(1)
-    
-    if commands[0].strip().lower() != "login":
-        print("Error: First command must be 'login'.")
-        sys.exit(1)
-    
-    session_type = commands[1].strip().lower()
-    username = commands[2].strip()
+    # First line must be 'login'
+    if lines[0].lower() != "login":
+        print("Error: Expected 'login' as the first command.")
+        return
 
-    # Create the appropriate user based on session type.
+    if len(lines) < 2:
+        print("Error: Session type not provided.")
+        return
+
+    session_type = lines[1].lower()
+    current_index = 2  # pointer for the next line
+
+    # Process Admin session
     if session_type == "admin":
-        user = Admin(current_accounts_file, daily_transaction_file)
+        # Create an Admin user (username is set as "admin")
+        user = Admin(current_accounts_file, transaction_file)
+        user.login("admin", "admin")
+
+        # Process commands until logout
+        while current_index < len(lines) and lines[current_index].lower() != "logout":
+            command = lines[current_index].lower()
+            current_index += 1
+
+            if command == "create":
+                # Expected arguments: account_name, account_num, balance, transaction_plan
+                if current_index + 3 >= len(lines):
+                    print("Error: Insufficient arguments for create command.")
+                    break
+                account_name = lines[current_index]
+                account_num = lines[current_index + 1]
+                try:
+                    balance = float(lines[current_index + 2])
+                except ValueError:
+                    print("Error: Invalid balance value.")
+                    break
+                transaction_plan = lines[current_index + 3].upper()
+                if transaction_plan not in ["NP", "SP"]:
+                    print("Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.")
+                    break
+                current_index += 4
+                user.create_account(account_name, account_num, balance, transaction_plan)
+            
+            elif command == "changeplan":
+                if current_index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for changeplan command.")
+                    break
+                account_name = lines[current_index]
+                account_num = lines[current_index + 1]
+                current_index += 2
+                user.change_plan(account_name, account_num)
+            
+            elif command == "delete":
+                if current_index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for delete command.")
+                    break
+                account_name = lines[current_index]
+                account_num = lines[current_index + 1]
+                current_index += 2
+                user.delete_account(account_name, account_num)
+            
+            elif command == "disable":
+                if current_index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for disable command.")
+                    break
+                account_name = lines[current_index]
+                account_num = lines[current_index + 1]
+                current_index += 2
+                user.disable_account(account_name, account_num)
+            
+            elif command in ["deposit", "withdrawal", "transfer", "paybill"]:
+                print("Error: Admin users are not permitted to perform transaction commands.")
+                # Skip the expected number of arguments:
+                if command in ["deposit", "withdrawal"]:
+                    current_index += 3  # account_num, amount, account_name (if provided)
+                elif command == "transfer":
+                    current_index += 4  # from_acc, to_acc, amount, account_name
+                elif command == "paybill":
+                    current_index += 4  # account_name, account_num, amount, company
+            else:
+                print(f"Unknown command: {command}")
+
+        user.logout()
+
+    # Process Standard session
+    elif session_type == "standard":
+        # For standard users, the next line must be the account holder's name.
+        if len(lines) < 3:
+            print("Error: Account name not provided for standard login.")
+            return
+        account_name = lines[2]
+        user = StandardUser(current_accounts_file, transaction_file)
+        user.login(account_name, "standard")
+        current_index = 3  # move past account name
+
+        while current_index < len(lines) and lines[current_index].lower() != "logout":
+            command = lines[current_index].lower()
+            current_index += 1
+
+            if command == "deposit":
+                # Expected: account_num, amount
+                if current_index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for deposit command.")
+                    break
+                account_num = lines[current_index]
+                try:
+                    amount = float(lines[current_index + 1])
+                except ValueError:
+                    print("Error: Invalid amount for deposit.")
+                    break
+                current_index += 2
+                user.deposit(account_num, amount, account_name)
+
+            elif command == "withdrawal":
+                # Expected: account_num, amount
+                if current_index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for withdrawal command.")
+                    break
+                account_num = lines[current_index]
+                try:
+                    amount = float(lines[current_index + 1])
+                except ValueError:
+                    print("Error: Invalid amount for withdrawal.")
+                    break
+                current_index += 2
+                user.withdrawal(account_num, amount, account_name)
+
+            elif command == "transfer":
+                # Expected: from_acc, to_acc, amount
+                if current_index + 2 >= len(lines):
+                    print("Error: Insufficient arguments for transfer command.")
+                    break
+                from_acc = lines[current_index]
+                to_acc = lines[current_index + 1]
+                try:
+                    amount = float(lines[current_index + 2])
+                except ValueError:
+                    print("Error: Invalid amount for transfer.")
+                    break
+                current_index += 3
+                user.transfer(from_acc, to_acc, amount, account_name)
+
+            elif command == "paybill":
+                # Expected: account_num, amount, company (company may contain spaces but is provided on one line)
+                if current_index + 2 >= len(lines):
+                    print("Error: Insufficient arguments for paybill command.")
+                    break
+                account_num = lines[current_index]
+                try:
+                    amount = float(lines[current_index + 1])
+                except ValueError:
+                    print("Error: Invalid amount for paybill.")
+                    break
+                current_index += 2
+                if current_index >= len(lines):
+                    print("Error: Company name missing for paybill command.")
+                    break
+                company = lines[current_index]
+                current_index += 1
+                user.pay_bill(account_num, amount, company, account_name)
+
+            else:
+                print(f"Unknown command: {command}")
+
+        user.logout()
+
     else:
-        user = StandardUser(current_accounts_file, daily_transaction_file)
-    
-    # Call login, which (in your code) reads the accounts file.
-    user.login(username, session_type)
-    
-    # Process remaining commands starting after the login info.
-    i = 3
-    while i < len(commands):
-        cmd = commands[i].strip().lower()
-        if cmd == "changeplan":
-            if i + 2 >= len(commands):
-                print("Error: Missing parameters for changeplan command.")
-                break
-            account_name = commands[i+1].strip()
-            account_num = commands[i+2].strip()
-            user.change_plan(account_name, account_num)
-            i += 3
-        elif cmd == "transfer":
-            # (Implement similar handling for transfer if needed)
-            i += 1  # Placeholder
-        elif cmd == "logout":
-            user.logout()
-            i += 1
-        else:
-            print(f"Unknown command: {cmd}")
-            i += 1
+        print("Error: Session type must be either 'admin' or 'standard'.")
+
 
 if __name__ == "__main__":
     main()
+
 """def main():
     if len(sys.argv) != 3:
         print("Usage: TellerSystem.py <current_accounts_file> <transaction_file>")

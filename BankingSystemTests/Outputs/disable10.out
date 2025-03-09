@@ -1,8 +1,6 @@
-Logged in as withdraw 200 in admin mode.
-Unknown command: disable
-Unknown command: johndoe
-Unknown command: 12345
+Logged in as admin in admin mode.
+Unknown command: withdraw 200
+Error: Account holder name does not match account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: 

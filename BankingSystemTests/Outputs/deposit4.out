@@ -1,7 +1,7 @@
 Logged in as JohnDoe in standard mode.
-Unknown command: deposit
-Unknown command: 12345
-Unknown command: 1500.00
+Account name for the account number given: JohnDoe_____________
+Account name inputed: JohnDoe
+Error: Account holder name does not match account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

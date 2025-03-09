@@ -1,6 +1,6 @@
-Logged in as delete in admin mode.
-Unknown command: johndoe
-Unknown command: ""
+Logged in as admin in admin mode.
+Account "" not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

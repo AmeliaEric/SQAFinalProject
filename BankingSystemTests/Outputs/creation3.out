@@ -1,7 +1,5 @@
-Logged in as create in admin mode.
-Unknown command: janedoe
-Unknown command: 67890
-Unknown command: 800.00
+Logged in as admin in admin mode.
+Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

@@ -1,13 +1,7 @@
-Logged in as delete in admin mode.
-Unknown command: alicebrown
-Unknown command: 98765
+Logged in as admin in admin mode.
+Account name for the account number given: AliceBrown__________
+Account name inputed: AliceBrown
+Error: Account holder name does not match account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: login
-Unknown command: admin
-Unknown command: withdraw
-Unknown command: alicebrown
-Unknown command: 98765
-Unknown command: 100.00
-Error: No active session. Please login first.

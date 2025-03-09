@@ -1,7 +1,6 @@
 Logged in as JohnDoe in standard mode.
-Unknown command: deposit
-Unknown command: 99999
-Unknown command: 200.00
+Account 99999 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

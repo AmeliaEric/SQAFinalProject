@@ -1,6 +1,6 @@
-Logged in as delete in admin mode.
-Unknown command: nonexistentuser
-Unknown command: 00000
+Logged in as admin in admin mode.
+Account 00000 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

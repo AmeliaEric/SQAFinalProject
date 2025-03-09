@@ -1,7 +1,5 @@
 Logged in as JohnDoe in standard mode.
-Unknown command: deposit
-Unknown command: 12345
-Unknown command: 500.abc
+Error: Invalid amount for deposit.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

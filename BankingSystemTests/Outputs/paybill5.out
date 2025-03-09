@@ -1,9 +1,5 @@
-Logged in as paybill in admin mode.
-Unknown command: johndoe
-Unknown command: 12345
-Unknown command: 2500.00
-Unknown command: the bright light electric company (ec)
+Logged in as admin in admin mode.
+Error: Admin users are not permitted to perform transaction commands.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
-Unknown command: 

@@ -1,10 +1,5 @@
-Logged in as create in admin mode.
-Unknown command: davidmiller
-Unknown command: 45678
-Unknown command: 500.00
-Unknown command: 45678
-Unknown command: 99999
-Unknown command: 500.00
+Logged in as admin in admin mode.
+Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

@@ -1,7 +1,5 @@
-Logged in as create in admin mode.
-Unknown command: oliviastone
-Unknown command: 36985
-Unknown command: 0.00
+Logged in as admin in admin mode.
+Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

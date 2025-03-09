@@ -1,10 +1,10 @@
-Logged in as withdraw in admin mode.
+Logged in as admin in admin mode.
+Unknown command: withdraw
 Unknown command: janedoe
 Unknown command: 67890
 Unknown command: 200.00
-Unknown command: delete
-Unknown command: janedoe
-Unknown command: 67890
+Account 67890 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

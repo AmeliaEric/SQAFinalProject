@@ -1,6 +1,6 @@
-Logged in as delete in admin mode.
-Unknown command: bobsmith
-Unknown command: 67890
+Logged in as admin in admin mode.
+Account 67890 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
