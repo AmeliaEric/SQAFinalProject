@@ -170,32 +170,36 @@ class User:
 
 
     def write_transaction_file(self):
-        """
-        Writes the transaction history to the daily transaction file and updates the current accounts file.
-        """
-        # Writing to daily transaction file
         with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
-                transaction_code, account_name, account_number, amount, misc = transaction.split()
-                # Formatting each field properly
-                formatted_transaction = (
-                    f"{transaction_code:<2}"
-                    f"{account_name:<20}"
-                    f"{int(account_number):05d}"
-                    f"{float(amount):08f}.00"
+                tokens = transaction.split()
+                if len(tokens) != 5:
+                    print("Warning: Skipping malformed transaction:", transaction)
+                    continue
+                transaction_code, account_name, account_number, amount, misc = tokens
+                try:
+                    formatted_transaction = (
+                    f"{transaction_code:<2} "
+                    f"{account_name:<20} "
+                    f"{int(account_number):05d} "
+                    f"{float(amount):08.2f} "
                     f"{misc:2}"
                 )
+                except Exception as e:
+                    print("Error formatting transaction:", transaction, "Error:", e)
+                    continue
                 transaction_file.write(formatted_transaction + "\n")
-            # Append the end-of-session transaction
-            transaction_file.write("00" + " " * 20 + "00000" + "00000000.00" + "  \n")
+                transaction_file.write("00" + " " + " " * 20 + " " + "00000" + " " + "00000000.00" + "  \n")
         print("Transaction file updated.")
-
-        # Writing to current accounts file
+                
         with open(self.current_accounts_file, "w") as accounts_file:
             for account in self.accounts:
-                accounts_file.write(f"{account.account_number:<5} {account.account_name:<20} {account.status} {account.balance:>9.2f} {account.transaction_plan}\n")
+                accounts_file.write(
+                f"{account.account_number:<5} {account.account_name:<20} {account.status} {account.balance:>9.2f} {account.transaction_plan}\n"
+                )
             accounts_file.write("END_OF_FILE\n")
         print("Accounts file updated.")
+
 
 
     def find_account(self, account_num):
@@ -555,25 +559,41 @@ def run_tests():
 def main():
     if len(sys.argv) < 3:
         print("Usage: python TellerSystem.py <current_accounts_file> <transaction_file>")
-        return
+        sys.exit(1)
 
     current_accounts_file = sys.argv[1]
     transaction_file = sys.argv[2]
+
+    # Clear the transaction file before processing
+    open(transaction_file, 'w').close()
 
     # Read all non-empty lines from input (provided via the .inp file)
     lines = [line.strip() for line in sys.stdin if line.strip() != '']
     if not lines:
         print("No input provided.")
         return
+    
+    # Always print the welcome message and prompt
+    print("Welcome to the banking system.")
+    print("Please enter session type: standard or admin.")
+
+    # Check if session type is missing (or blank)
+    if len(lines) < 2 or lines[1].strip() == "":
+        with open(transaction_file, "w") as tf:
+            tf.write("00" + " " * 20 + "0000000000000.00")
+        print("Transaction file updated.")
+        sys.exit(0)
+
 
     # First line must be 'login'
     if lines[0].lower() != "login":
         print("Error: Expected 'login' as the first command.")
-        return
+        sys.exit(1)
 
-    if len(lines) < 2:
-        print("Error: Session type not provided.")
-        return
+    session_type = lines[1].lower()
+    if session_type not in ["admin", "standard"]:
+        print("Error: Session type must be either 'admin' or 'standard'.")
+        sys.exit(1)
 
     session_type = lines[1].lower()
     current_index = 2  # pointer for the next line
@@ -652,9 +672,11 @@ def main():
     # Process Standard session
     elif session_type == "standard":
         # For standard users, the next line must be the account holder's name.
-        if len(lines) < 3:
-            print("Error: Account name not provided for standard login.")
-            return
+        if len(lines) < 3 or lines[2].strip() == "":
+            with open(transaction_file, "w") as tf:
+                tf.write("00" + " " * 20 + "0000000000000.00")
+            print("Transaction file updated.")
+            sys.exit(0)
         account_name = lines[2]
         user = StandardUser(current_accounts_file, transaction_file)
         user.login(account_name, "standard")
@@ -752,7 +774,6 @@ if __name__ == "__main__":
     if not commands:
         print("No commands provided.")
         sys.exit(1)
-
     # Create an Admin or StandardUser object
     session_type = commands[1].strip().lower()
     if session_type == "admin":

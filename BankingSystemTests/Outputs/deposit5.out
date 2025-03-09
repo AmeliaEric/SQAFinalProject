@@ -1,3 +1,5 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
 Logged in as JohnDoe in standard mode.
 Error: Invalid amount for deposit.
 Transaction file updated.

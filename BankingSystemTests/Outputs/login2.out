@@ -1,1 +1,3 @@
-Error: Account name not provided for standard login.
+Welcome to the banking system.
+Please enter session type: standard or admin.
+Transaction file updated.

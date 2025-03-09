@@ -1,3 +1,5 @@
+Welcome to the banking system.
+Please enter session type: standard or admin.
 Logged in as admin in admin mode.
 Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
 Transaction file updated.
