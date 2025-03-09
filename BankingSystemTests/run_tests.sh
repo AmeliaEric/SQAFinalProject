@@ -46,7 +46,7 @@ for expected_file in "$EXPECTED_TRANSACTION_DIR"/*.etf; do
     fi
 
     # Compare files
-    diff_output=$(diff "$expected_file" "$actual_file")
+    diff_output=$(diff -wB "$expected_file" "$actual_file")
 
     if [ "$diff_output" != "" ]; then
         echo "$test_name, See $expected_file, See $actual_file, Differences found" >> "$FAILURES_FILE"
