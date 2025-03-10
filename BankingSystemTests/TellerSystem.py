@@ -250,7 +250,6 @@ class StandardUser(User):
             if amount > self.max_withdrawal_limit:
                 print(f"Error: Withdrawal amount exceeds the ${self.max_withdrawal_limit} limit.")
                 return
-            account = self.find_account(account_num)
             if account.status == "D":
                 print("Error: Cannot withdraw from a disabled account.")
                 return
@@ -261,7 +260,9 @@ class StandardUser(User):
                 print("Error: Withdrawal amount must be positive.")
                 return
             if account:
+                print(account.balance)
                 account.balance -= amount
+                print(account.balance)
                 transaction = f"WITHDRAWAL {account_num} {amount:.2f}"
                 self.transactions.append(transaction)
                 transaction_msg = account.select_transaction(1, amount)
@@ -742,7 +743,7 @@ def main():
                 user.deposit(account_num, amount, account_name)
 
 
-            elif command == "withdrawal":
+            elif command == "withdraw":
                 # Expected: account_num, amount
                 if current_index + 1 >= len(lines):
                     print("Error: Insufficient arguments for withdrawal command.")

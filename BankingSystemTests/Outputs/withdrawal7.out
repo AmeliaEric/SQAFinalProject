@@ -1,8 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Unknown command: withdraw
-Unknown command: 12345
-Unknown command: 100.abc
+Error: Invalid amount for withdrawal.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

@@ -1,8 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Unknown command: withdraw
-Unknown command: 12345
-Unknown command: 0.00
+Account 12345 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

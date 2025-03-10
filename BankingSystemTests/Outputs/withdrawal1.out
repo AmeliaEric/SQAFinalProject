@@ -1,8 +1,8 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Unknown command: withdraw
-Unknown command: 67890
-Unknown command: 200.00
+6300.0
+6100.0
+Withdrew $200.0 from account 11111
 Transaction file updated.
 Accounts file updated.
 Session terminated.
