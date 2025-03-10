@@ -1,6 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
+Created account for OliviaStone with account number 36985 and balance $0.0
 Transaction file updated.
 Accounts file updated.
 Session terminated.

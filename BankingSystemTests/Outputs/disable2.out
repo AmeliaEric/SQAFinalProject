@@ -1,7 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Account 12345 not found.
-Error: Account does not exist or name mismatch.
+Disabled account 12367 for JaneDoe
 Transaction file updated.
 Accounts file updated.
 Session terminated.

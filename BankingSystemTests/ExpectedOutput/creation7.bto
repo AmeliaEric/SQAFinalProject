@@ -1,7 +1,7 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Enter account holder’s name: OliviaStone
-Enter the account number: 36985
-Enter starting balance of account: 0.00
-Account created successfully.
-Session terminated
+Enter session type: standard or admin.
+Account 36985 not found.
+Created account for OliviaStone with account number 36985 and balance $0.0
+Transaction file updated.
+Accounts file updated.
+Session terminated.

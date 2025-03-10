@@ -1,8 +1,6 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Admin session active.
-Enter account holder’s name: JohnDoe
-Enter account number: 12345
-Account disabled.
+Enter session type: standard or admin.
+Disabled account 12367 for JaneDoe
+Transaction file updated.
+Accounts file updated.
 Session terminated.
-

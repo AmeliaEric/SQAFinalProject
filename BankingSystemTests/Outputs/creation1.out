@@ -1,6 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
+Created account for MikeRoss with account number 13579 and balance $1200.0
 Transaction file updated.
 Accounts file updated.
 Session terminated.

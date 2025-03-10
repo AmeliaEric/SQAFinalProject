@@ -3,3 +3,6 @@ Enter session type: standard or admin.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
+Welcome to the banking system.
+Enter session type: standard or admin.
+Error: No active session. Please login first.

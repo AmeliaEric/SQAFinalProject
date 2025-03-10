@@ -1,10 +1,1 @@
 Test Case, Expected Output, Actual Output, Difference
-creation1, See ExpectedTransaction/creation1.etf, See Outputs/creation1.atf, Differences found
-creation7, See ExpectedTransaction/creation7.etf, See Outputs/creation7.atf, Differences found
-deletion1, See ExpectedTransaction/deletion1.etf, See Outputs/deletion1.atf, Differences found
-deletion5, See ExpectedTransaction/deletion5.etf, See Outputs/deletion5.atf, Differences found
-disable2, See ExpectedTransaction/disable2.etf, See Outputs/disable2.atf, Differences found
-disable3, See ExpectedTransaction/disable3.etf, See Outputs/disable3.atf, Differences found
-disable4, See ExpectedTransaction/disable4.etf, See Outputs/disable4.atf, Differences found
-login4, See ExpectedTransaction/login4.etf, See Outputs/login4.atf, Differences found
-paybill1, See ExpectedTransaction/paybill1.etf, See Outputs/paybill1.atf, Differences found

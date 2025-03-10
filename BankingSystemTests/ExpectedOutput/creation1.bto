@@ -1,7 +1,7 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Enter account holder’s name: MikeRoss
-Enter the account number: 13579
-Enter starting balance of account: 1200.00
-Account created successfully.
+Enter session type: standard or admin.
+Account 13579 not found.
+Created account for MikeRoss with account number 13579 and balance $1200.0
+Transaction file updated.
+Accounts file updated.
 Session terminated.

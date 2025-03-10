@@ -1,6 +1,6 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Enter account holder’s name: JohnDoe
-Enter the account number: 12345
-Account deleted successfully.
+Enter session type: standard or admin.
+Deleted account 12345 for JohnDoe
+Transaction file updated.
+Accounts file updated.
 Session terminated.

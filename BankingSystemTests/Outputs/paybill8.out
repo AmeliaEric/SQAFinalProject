@@ -1,6 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
 Error: Admin users are not permitted to perform transaction commands.
+Unknown command: the bright light electric company (ec)
 Transaction file updated.
 Accounts file updated.
 Session terminated.

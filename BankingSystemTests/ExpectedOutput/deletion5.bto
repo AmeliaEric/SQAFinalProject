@@ -1,7 +1,12 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Enter account holder’s name: AliceBrown
-Enter the account number: 98765
-Account deleted successfully.
-
-Error: Cannot process transactions on a deleted account.
+Enter session type: standard or admin.
+Deleted account 98765 for AliceBrown
+Transaction file updated.
+Accounts file updated.
+Session terminated.
+Welcome to the banking system.
+Enter session type: standard or admin.
+Error: Account does not exist.
+Transaction file updated.
+Accounts file updated.
+Session terminated.

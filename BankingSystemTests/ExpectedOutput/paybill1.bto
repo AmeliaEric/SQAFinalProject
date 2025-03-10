@@ -1,10 +1,6 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Enter account holder’s name: JohnDoe
-Enter the account number: 12345
-Enter amount to pay: 500.00
-Enter the company to pay: The Bright Light Electric Company (EC)
-Bill payment successful.
+Enter session type: standard or admin.
+Paid $500.0 from account 54321
+Transaction file updated.
+Accounts file updated.
 Session terminated.
-
-

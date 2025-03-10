@@ -209,7 +209,6 @@ class User:
                         return account
                 else:
                     return account
-        print(f"Account {account_num} not found.")
         return None
 
 
@@ -228,6 +227,7 @@ class StandardUser(User):
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_deposit_limit = 1000.0
+        self.max_paybill_limit = 2000.0
 
 
     def withdrawal(self, account_num, amount, account_name):
@@ -238,7 +238,7 @@ class StandardUser(User):
             print("Error: No active session. Please login first.")
             return
         account = self.find_account(account_num)
-        if not account:
+        if account == None:
             print("Error: Account does not exist.")
             return
         if account.account_name != account_name:
@@ -342,6 +342,33 @@ class StandardUser(User):
         self.transactions.append(transaction)
         print("Deposit successful.")
 
+    def pay_bill(self, account_num, amount, company, account_name):
+        """
+        Processes a bill payment transaction for a standard user.
+        """
+        if not self.is_logged_in:
+            print("Error: No active session. Please login first.")
+            return
+        account = self.find_account(account_num)
+        if not account:
+            print("Error: Account does not exist.")
+            return
+        if account.status == "D":
+            print("Error: Cannot pay a bill from a disabled account.")
+            return
+        if account.account_name != account_name:
+            print("Error: Account holder name does not match account number.")
+            return
+        if account:
+            if amount > self.max_paybill_limit:
+                print("Payment amount exceeds limit.")
+                return
+            if account:
+                transaction = f"03 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
+                self.transactions.append(transaction)
+                transaction_msg = account.select_transaction(3, amount)
+                print(transaction_msg)
+
 
 
 
@@ -356,8 +383,6 @@ class Admin(User):
     """
     def __init__(self, current_accounts_file, transaction_file):
         super().__init__(current_accounts_file, transaction_file)
-
-        self.max_paybill_limit = 2000.0
 
 
     def create_account(self, account_name, account_num, balance, transaction_plan):
@@ -380,7 +405,7 @@ class Admin(User):
         if account != None:
             print("Error: Account number already in use.")
             return
-        new_account = Account(account_num, account_name, "A", balance, transaction_plan)
+        new_account = Account(account_num, account_name, "A", balance, transaction_plan, self.current_accounts_file, self.transaction_file)
         self.accounts.append(new_account)
         self.transactions.append(f"CREATE {account_num} {balance:.2f} {transaction_plan}")
         print(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
@@ -404,22 +429,26 @@ class Admin(User):
             print("Error: Account does not exist.")
             return
         if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
             print("Error: Account holder name does not match account number.")
             return
-        if account:
-            self.accounts.remove(account)
-            transaction = f"06 {account_name:<20} {int(account_num):05d} 0.00 DA"
-            self.transactions.append(transaction)
-            print(f"Deleted account {account_num} for {account_name}")
 
+        # Remove the account from the accounts list
+        self.accounts.remove(account)
+
+        # Log the transaction
+        transaction = f"06 {account_name:<20} {int(account_num):05d} 0.00 DA"
+        self.transactions.append(transaction)
+        print(f"Deleted account {account_num} for {account_name}")
 
     def disable_account(self, account_name, account_num):
+        """
+        Disables an account for an admin.
+        """
         if not self.is_logged_in or self.session_type != "admin":
             print("Error: Admin access required.")
             return
 
+        # Find the account, ignoring underscores in the account name
         account = self.find_account(account_num, account_name)
         if not account:
             print("Error: Account does not exist or name mismatch.")
@@ -428,9 +457,11 @@ class Admin(User):
             print("Error: Account already disabled.")
             return
 
+        # Disable the account
         account.status = "D"
-        # EXACT formatting to match your provided etf outputs
-        transaction = f"DISABLE {account_name} {account_num}"
+
+        # Log the transaction in the correct format
+        transaction = f"04 {account_name:<20} {int(account_num):05d} {account.balance:08.2f} {account.transaction_plan}"
         self.transactions.append(transaction)
         print(f"Disabled account {account_num} for {account_name}")
 
@@ -469,420 +500,204 @@ class Admin(User):
         else:
             print("Error: Account is already on the non-student plan.")
             return
-    def pay_bill(self, account_num, amount, company, account_name):
-        """
-        Processes a bill payment transaction for a standard user.
-        """
-        if not self.is_logged_in:
-            print("Error: No active session. Please login first.")
-            return
-        account = self.find_account(account_num)
-        if not account:
-            print("Error: Account does not exist.")
-            return
-        if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
-            print("Error: Account holder name does not match account number.")
-            return
-        if account:
-            if amount > self.max_paybill_limit:
-                print("Payment amount exceeds limit.")
-                return
-            account = self.find_account(account_num)
-            if account:
-                transaction = f"03 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
-                self.transactions.append(transaction)
-                transaction_msg = account.select_transaction(3, amount)
-                print(transaction_msg)
-
-
-# Extra Test Functions
-def valid_deposit():
-    print("=== Test: Valid Deposit ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.deposit("12345", 500, "JohnDoe_____________")
-    user.logout()
-    print("\n")
-
-
-def withdrawal_insufficient_funds():
-    print("=== Test: Withdrawal with Insufficient Funds ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    # Assuming account 12345 has less than 10000 available
-    user.withdrawal("12345", 10000, "JohnDoe_____________")
-    user.logout()
-    print("\n")
-
-
-def transfer_same_account():
-    print("=== Test: Transfer to Same Account ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.transfer("12345", "12345", 100, "JohnDoe_____________")
-    user.logout()
-    print("\n")
-
-
-def delete_account_wrong_name():
-    print("=== Test: Delete Account with Mismatched Account Name ===")
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    # Provide an incorrect account name to trigger an error
-    admin.delete_account("WrongName", "12345")
-    admin.logout()
-    print("\n")
-
-
-def disable_account_wrong_name():
-    print("=== Test: Disable Account with Mismatched Account Name ===")
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    # Provide an incorrect account name to trigger an error
-    admin.disable_account("WrongName", "12345")
-    admin.logout()
-    print("\n")
-
-
-def valid_transfer():
-    print("=== Test: Valid Transfer ===")
-    user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    user.login("john_doe", "standard")
-    user.transfer("12345", "67890", 300, "JohnDoe_____________")
-    user.logout()
-    print("\n")
-
-
-def run_tests():
-    valid_deposit()
-    withdrawal_insufficient_funds()
-    transfer_same_account()
-    delete_account_wrong_name()
-    disable_account_wrong_name()
-    valid_transfer()
-
+        
 
 def main():
     if len(sys.argv) < 3:
         print("Usage: python TellerSystem.py <current_accounts_file> <transaction_file>")
         sys.exit(1)
 
-
     current_accounts_file = sys.argv[1]
     transaction_file = sys.argv[2]
 
-
     # Clear the transaction file before processing
     open(transaction_file, 'w').close()
-
 
     # Read all non-empty lines from input (provided via the .inp file)
     lines = [line.strip() for line in sys.stdin if line.strip() != '']
     if not lines:
         print("No input provided.")
         return
-   
-    # Always print the welcome message and prompt
-    print("Welcome to the banking system.")
-    print("Enter session type: standard or admin.")
+    
+    index = 0
+    while index < len(lines):  
+        # Always print the welcome message and prompt
+        print("Welcome to the banking system.")
+        print("Enter session type: standard or admin.")
 
-
-    # Check if session type is missing (or blank)
-    if len(lines) < 2 or lines[1].strip() == "":
-        with open(transaction_file, "w") as tf:
-            tf.write("00 00000 00000.00")
-        print("Transaction file updated.")
-        sys.exit(0)
-
-
-
-
-    # First line must be 'login'
-    if lines[0].lower() != "login":
-        print("Error: No active session. Please login first.")
-        with open(transaction_file, "w") as tf:
-            tf.write("00 00000 00000.00")
-        sys.exit(1)
-
-
-    session_type = lines[1].lower()
-    if session_type not in ["admin", "standard"]:
-        print("Error: Session type must be either 'admin' or 'standard'.")
-        sys.exit(1)
-
-
-    session_type = lines[1].lower()
-    current_index = 2  # pointer for the next line
-
-
-    # Process Admin session
-    if session_type == "admin":
-        # Create an Admin user (username is set as "admin")
-        user = Admin(current_accounts_file, transaction_file)
-        user.login("admin", "admin")
-
-
-        # Process commands until logout
-        while current_index < len(lines) and lines[current_index].lower() != "logout":
-            command = lines[current_index].lower()
-            current_index += 1
-
-
-            if command == "create":
-                # Expected arguments: account_name, account_num, balance, transaction_plan
-                if current_index + 3 >= len(lines):
-                    print("Error: Insufficient arguments for create command.")
-                    break
-                account_name = lines[current_index]
-                account_num = lines[current_index + 1]
-                try:
-                    balance = float(lines[current_index + 2])
-                except ValueError:
-                    print("Error: Invalid balance value.")
-                    break
-                transaction_plan = lines[current_index + 3].upper()
-                if transaction_plan not in ["NP", "SP"]:
-                    print("Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.")
-                    break
-                current_index += 4
-                user.create_account(account_name, account_num, balance, transaction_plan)
-           
-            elif command == "changeplan":
-                if current_index + 1 >= len(lines):
-                    print("Error: Insufficient arguments for changeplan command.")
-                    break
-                account_name = lines[current_index]
-                account_num = lines[current_index + 1]
-                current_index += 2
-                user.change_plan(account_name, account_num)
-           
-            elif command == "delete":
-                if current_index + 1 >= len(lines):
-                    print("Error: Insufficient arguments for delete command.")
-                    break
-                account_name = lines[current_index]
-                account_num = lines[current_index + 1]
-                current_index += 2
-                user.delete_account(account_name, account_num)
-           
-            elif command == "disable":
-                if current_index + 1 >= len(lines):
-                    print("Error: Insufficient arguments for disable command.")
-                    break
-                account_name = lines[current_index]
-                account_num = lines[current_index + 1]
-                current_index += 2
-                user.disable_account(account_name, account_num)
-            elif command == "paybill":
-                # Expected input order: account_name, account_num, amount, company
-                if current_index + 3 >= len(lines):
-                    print("Error: Insufficient arguments for paybill command.")
-                    break
-                account_name = lines[current_index]
-                account_num = lines[current_index + 1]
-                try:
-                    amount = float(lines[current_index + 2])
-                except ValueError:
-                    print("Error: Invalid amount for paybill.")
-                    break
-                current_index += 3
-                if current_index >= len(lines):
-                    print("Error: Company name missing for paybill command.")
-                    break
-                company = lines[current_index]
-                current_index += 1
-
-                # Call the method with the account number first, as expected by pay_bill
-                user.pay_bill(account_num, amount, company, account_name)
-
-           
-            elif command in ["deposit", "withdrawal", "transfer"]:
-                print("Error: Admin users are not permitted to perform transaction commands.")
-                # Skip the expected number of arguments:
-                if command in ["deposit", "withdrawal"]:
-                    current_index += 3  # account_num, amount, account_name (if provided)
-                elif command == "transfer":
-                    current_index += 4  # from_acc, to_acc, amount, account_name
-                elif command == "paybill":
-                    current_index += 4  # account_name, account_num, amount, company
-            else:
-                print(f"Unknown command: {command}")
-
-
-        user.logout()
-
-
-    # Process Standard session
-    elif session_type == "standard":
-        # For standard users, the next line must be the account holder's name.
-        if len(lines) < 3 or lines[2].strip() == "":
+        # Ensure first command is 'login'
+        if lines[index].lower() != "login":
+            print("Error: No active session. Please login first.")
             with open(transaction_file, "w") as tf:
                 tf.write("00 00000 00000.00")
-            print("Transaction file updated.")
-            sys.exit(0)
-        account_name = lines[2]
-        user = StandardUser(current_accounts_file, transaction_file)
-        user.login(account_name, "standard")
-        current_index = 3  # move past account name
+            return
+        
+        index += 1
+        if index >= len(lines):
+            print("Error: Missing session type after login.")
+            with open(transaction_file, "w") as tf:
+                tf.write("00 00000 00000.00")
+            return
 
+        session_type = lines[index].lower()
+        if session_type not in ["admin", "standard"]:
+            print("Error: Invalid session type. Must be 'admin' or 'standard'.")
+            return
+        
+        index += 1
+        if session_type == "admin":
+            user = Admin(current_accounts_file, transaction_file)
+            user.login("admin", "admin")
+        else:
+            if index >= len(lines):
+                print("Error: Missing account name for standard session.")
+                with open(transaction_file, "w") as tf:
+                    tf.write("00 00000 00000.00")
+                return
+            account_name = lines[index]
+            index += 1
+            user = StandardUser(current_accounts_file, transaction_file)
+            user.login(account_name, "standard")
 
-        while current_index < len(lines) and lines[current_index].lower() != "logout":
-            command = lines[current_index].lower()
-            current_index += 1
+        # Process transactions until logout or end of file
+        while index < len(lines) and lines[index].lower() != "logout":
+            command = lines[index].lower()
+            index += 1
 
-
-            if command == "deposit":
-                if current_index >= len(lines):
-                    print("Error: Insufficient arguments for deposit command.")
-                    break
-                account_num = lines[current_index]
-                print(f"Enter deposit account number: {account_num}")
-                current_index += 1
-                if current_index >= len(lines):
-                    print("Error: Insufficient arguments for deposit command.")
-                    break
-                amount_str = lines[current_index]
-                print(f"Enter amount to deposit: {amount_str}")
+            if command == "create" and session_type == "admin":
+                if index + 3 >= len(lines):
+                    print("Error: Insufficient arguments for create command.")
+                    break  # Exit the loop on error
+                account_name = lines[index]
+                account_num = int(lines[index + 1])
                 try:
-                    amount = float(amount_str)
+                    balance = float(lines[index + 2])
+                except ValueError:
+                    print("Error: Invalid balance value.")
+                    break  # Exit the loop on error
+                transaction_plan = lines[index + 3].upper()
+                if transaction_plan not in ["NP", "SP"]:
+                    print("Error: Invalid transaction plan. Must be 'NP' or 'SP'.")
+                    break  # Exit the loop on error
+                index += 4
+                user.create_account(account_name, account_num, balance, transaction_plan)
+
+            elif command == "changeplan" and session_type == "admin":
+                if index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for changeplan command.")
+                    break  # Exit the loop on error
+                account_name = lines[index]
+                account_num = lines[index + 1]
+                index += 2
+                user.change_plan(account_name, account_num)
+
+            elif command == "delete" and session_type == "admin":
+                if index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for delete command.")
+                    break  # Exit the loop on error
+                account_name = lines[index]
+                account_num = lines[index + 1]
+                index += 2
+                user.delete_account(account_name, account_num)
+
+            elif command == "disable" and session_type == "admin":
+                if index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for disable command.")
+                    break  # Exit the loop on error
+                account_name = lines[index]
+                account_num = lines[index + 1]
+                index += 2
+                user.disable_account(account_name, account_num)
+
+            elif session_type == "admin" and command in ["deposit", "withdraw", "transfer", "paybill"]:
+                print("Error: Admin users are not permitted to perform transaction commands.")
+                index += 2 if command in ["deposit", "withdraw"] else 3  # Skip extra arguments
+
+            elif command == "deposit" and session_type == "standard":
+                if index + 1 >= len(lines):
+                    print("Error: Insufficient arguments for deposit command.")
+                    break  # Exit the loop on error
+                account_num = lines[index]
+                index += 1
+                try:
+                    amount = float(lines[index])
                 except ValueError:
                     print("Error: Invalid deposit amount format.")
-                    current_index += 1
-                    continue
-                current_index += 1
+                    break  # Exit the loop on error
+                index += 1
                 user.deposit(account_num, amount, account_name)
 
-
-            elif command == "withdraw":
-                # Expected: account_num, amount
-                if current_index + 1 >= len(lines):
+            elif command == "withdraw" and session_type == "standard":
+                if index + 1 >= len(lines):
                     print("Error: Insufficient arguments for withdrawal command.")
-                    break
-                account_num = lines[current_index]
+                    break  # Exit the loop on error
+                account_num = lines[index]
+                index += 1
                 try:
-                    amount = float(lines[current_index + 1])
+                    amount = float(lines[index])
                 except ValueError:
                     print("Error: Invalid amount for withdrawal.")
-                    break
-                current_index += 2
+                    break  # Exit the loop on error
+                index += 1
                 user.withdrawal(account_num, amount, account_name)
 
-
-            elif command == "transfer":
-                # Expected: from_acc, to_acc, amount
-                if current_index + 2 >= len(lines):
+            elif command == "transfer" and session_type == "standard":
+                if index + 2 >= len(lines):
                     print("Error: Insufficient arguments for transfer command.")
-                    break
-                from_acc = lines[current_index]
-                to_acc = lines[current_index + 1]
+                    break  # Exit the loop on error
+                from_acc = lines[index]
+                to_acc = lines[index + 1]
                 try:
-                    amount = float(lines[current_index + 2])
+                    amount = float(lines[index + 2])
                 except ValueError:
                     print("Error: Invalid amount for transfer.")
-                    break
-                current_index += 3
+                    break  # Exit the loop on error
+                index += 3
                 user.transfer(from_acc, to_acc, amount, account_name)
+            
+            elif command == "paybill" and session_type == "standard":
+                if index + 3 >= len(lines):
+                    print("Error: Insufficient arguments for paybill command.")
+                    break  # Exit the loop on error
+                account_name_paybill = lines[index]
+                index += 1
+                account_num = lines[index]
+                index += 1
+                try:
+                    amount = float(lines[index])
+                except ValueError:
+                    print("Error: Invalid amount for paybill.")
+                    break  # Exit the loop on error
+                index += 1
 
+                if index >= len(lines):
+                    print("Error: Missing company name for paybill command.")
+                    break  # Exit the loop on error
+
+                company = lines[index]
+                index += 1
+                user.pay_bill(account_num, amount, company, account_name_paybill)
+
+            elif command == "logout":
+                user.logout()
+                session_type = None
+                user = None
 
             else:
                 print(f"Unknown command: {command}")
+                break  # Exit the loop on unknown command
 
-
-        user.logout()
-
-
-    else:
-        print("Error: Session type must be either 'admin' or 'standard'.")
-
-
-
-
-if __name__ == "__main__":
-    main()
-
-
-"""def main():
-    if len(sys.argv) != 3:
-        print("Usage: TellerSystem.py <current_accounts_file> <transaction_file>")
-        sys.exit(1)
-   
-    current_accounts_file = sys.argv[1]
-    transaction_file = sys.argv[2]
-   
-    # Read commands from standard input.
-    commands = sys.stdin.read().splitlines()
-   
-    if not commands:
-        print("No commands provided.")
-        sys.exit(1)
-    # Create an Admin or StandardUser object
-    session_type = commands[1].strip().lower()
-    if session_type == "admin":
-        user = Admin(current_accounts_file, transaction_file)
-    else:
-        user = StandardUser(current_accounts_file, transaction_file)
-   
-    # Process commands (like login, changeplan, logout)
-    i = 2  # Commands start from the third line (index 2)
-    while i < len(commands):
-        cmd = commands[i].strip().lower()
-        if cmd == "changeplan":
-            # Next two lines should be account holder name and account number
-            if i + 2 >= len(commands):
-                print("Insufficient parameters for changeplan command.")
-                break
-            account_name = commands[i+1].strip()
-            account_num = commands[i+2].strip()
-            user.change_plan(account_name, account_num)
-            i += 3  # Move to next command
-        elif cmd == "logout":
+        # Log out the user if the loop exits due to an error
+        if user and user.is_logged_in:
             user.logout()
-            i += 1  # Move to next command
-        else:
-            print(f"Unknown command: {cmd}")
-            i += 1
 
+        # Skip remaining input for the current session
+        while index < len(lines) and lines[index].lower() != "logout":
+            index += 1
+
+        # Move past "logout" and check for the next session
+        if index < len(lines) and lines[index].lower() == "logout":
+            index += 1
 
 if __name__ == "__main__":
     main()
-    """
-
-
-# Main program
-"""if __name__ == "__main__":
-   
-    The main program simulates a banking system with user and admin functionalities.
-    It allows users to perform transactions like withdrawal, transfer, bill payment,
-    and deposits. Admins can create, delete, disable accounts and change transaction plans.
-    Input: User actions (login, transactions)
-    Output: Transaction records written to daily_transaction_file.txt
-
-
-
-
-    # Example
-    standard_user = StandardUser("current_accounts_file.txt", "daily_transaction_file.txt")
-    standard_user.login("JohnDoe_____________", "standard")
-    standard_user.withdrawal("12345", 200, "JohnDoe_____________")
-    standard_user.transfer("12345", "67890", 200, "JohnDoe_____________")
-    standard_user.pay_bill("12345", 100, "EC", "JohnDoe_____________")
-    standard_user.deposit("12345", 600, "JohnDoe_____________")
-    standard_user.pay_bill("12345", 800, "EC", "JohnDoe_____________")
-    standard_user.logout()
-
-
-    admin = Admin("current_accounts_file.txt", "daily_transaction_file.txt")
-    admin.login("admin_user", "admin")
-    admin.create_account("EishaRizvi__________", "05452", 900, "NP")
-    admin.delete_account("JaneDoe_____________" , "67890")
-    admin.change_plan("JohnDoe_____________", "12345")
-    admin.disable_account("JohnDoe_____________", "12345")
-    admin.disable_account("EishaRizvi__________", "12345")
-    admin.change_plan("JaneDoe_____________" , "67890")
-    admin.logout()
-
-
-    print("\nExtra Tests: \n")
-    run_tests()"""

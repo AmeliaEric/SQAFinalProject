@@ -1,6 +1,6 @@
 Welcome to the banking system.
-Please enter session type: standard or admin.
-Admin session active.
-Account disabled.
+Enter session type: standard or admin.
+Error: Insufficient arguments for disable command.
+Transaction file updated.
+Accounts file updated.
 Session terminated.
-

@@ -1,6 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Invalid transaction_plan type. Must be 'NP' or 'SP'.
+Error: Invalid transaction plan. Must be 'NP' or 'SP'.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
