@@ -1,4 +1,4 @@
-54321 BobSmith             A   1800.00 NP
-11111 CharlieAdams         A   4100.00 NP
-05452 EishaRizvi           A   3900.00 NP
+54321 BobSmith             A    350.00 NP
+11111 CharlieAdams         A   7200.00 NP
+05452 EishaRizvi           A   1200.00 NP
 END_OF_FILE

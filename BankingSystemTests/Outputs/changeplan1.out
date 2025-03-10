@@ -1,6 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Account is already on the non-student plan.
+Changed plan for account 54321 for BobSmith
+Account plan updated successfully.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
