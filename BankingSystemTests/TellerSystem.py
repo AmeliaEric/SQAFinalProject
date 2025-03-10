@@ -407,7 +407,7 @@ class Admin(User):
             return
         new_account = Account(account_num, account_name, "A", balance, transaction_plan, self.current_accounts_file, self.transaction_file)
         self.accounts.append(new_account)
-        self.transactions.append(f"CREATE {account_num} {balance:.2f} {transaction_plan}")
+        self.transactions.append(f"05 {account_name:<20} {int(account_num):05d} {balance:08.2f} {transaction_plan}")
         print(f"Created account for {account_name} with account number {account_num} and balance ${balance}")
 
 
