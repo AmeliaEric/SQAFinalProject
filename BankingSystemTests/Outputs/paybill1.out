@@ -1,8 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Unknown command: 12345
-Unknown command: 500.00
-Unknown command: the bright light electric company (ec)
+Account JohnDoe not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
