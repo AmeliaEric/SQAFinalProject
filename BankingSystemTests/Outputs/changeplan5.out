@@ -1,6 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Account holder name does not match account number.
+Account 11111 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

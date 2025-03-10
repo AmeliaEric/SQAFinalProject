@@ -2,7 +2,8 @@ Welcome to the banking system.
 Enter session type: standard or admin.
 Enter deposit account number: 12345
 Enter amount to deposit: 0.00
-Error: Account holder name does not match account number.
+Account 12345 not found.
+Error: Invalid account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

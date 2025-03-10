@@ -1,7 +1,9 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Error: Account already disabled.
-Error: Account already disabled.
+Account 12345 not found.
+Error: Account does not exist.
+Account 12345 not found.
+Error: Account does not exist.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

@@ -182,8 +182,6 @@ class User:
             print("Current user accounts file not found.")
 
 
-
-
     def write_transaction_file(self):
         with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
@@ -208,16 +206,12 @@ class User:
         print("Transaction file updated.")
                
         with open(self.current_accounts_file, "w") as accounts_file:
-            for account in self.accounts:
+            for account in self.transactions:
                 accounts_file.write(
                 f"{account.account_number:<5} {account.account_name:<20} {account.status} {account.balance:>9.2f} {account.transaction_plan}\n"
                 )
             accounts_file.write("END_OF_FILE\n")
         print("Accounts file updated.")
-
-
-
-
 
 
     def find_account(self, account_num):
@@ -464,23 +458,28 @@ class Admin(User):
         if not self.is_logged_in or self.session_type != "admin":
             print("Error: This transaction requires admin access.")
             return
+        if not account_name:
+            print("Error: Account holder name cannot be empty.")
+            return
+        if not account_num:
+            print("Error: Account number cannot be empty.")
+            return 
         account = self.find_account(account_num)
         if not account:
             print("Error: Account does not exist.")
             return
-        if account.account_name.strip('_') != account_name.strip('_'):
+        if account.account_name != account_name:
             print("Error: Account holder name does not match account number.")
             return
         if account.status == "D":
             print("Error: Account already disabled.")
             return
-
-        account.select_maintenance("disable")
-    
-        # Match exactly your original expected transaction formatting
-        transaction = f"disable {account_name.strip('_')} {account_num}"
-        self.transactions.append(transaction)
-        print(f"Disabled account {account_num} for {account_name}")
+        if account:
+            account.select_maintenance("disable")
+            # Added correct formatting to match your existing transactions structure:
+            transaction = f"07 {account_name:<20} {int(account_num):05d} 00000000.00 DA"
+            self.transactions.append(transaction)
+            print(f"Disabled account {account_num} for {account_name}")
 
 
     def change_plan(self, account_name, account_num):
