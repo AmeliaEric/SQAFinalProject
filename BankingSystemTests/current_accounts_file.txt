@@ -1,5 +1,5 @@
 12345 JohnDoe              D    500.00 NP
-54321 BobSmith             A    250.00 SP
+54321 BobSmith             A    750.00 SP
 98765 AliceBrown           A   5000.00 NP
 11111 CharlieAdams         A   7500.00 NP
 05452 EishaRizvi           A    900.00 NP

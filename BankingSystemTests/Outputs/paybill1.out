@@ -1,7 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Account JohnDoe not found.
-Error: Account does not exist.
+Paid $500.0 from account 54321
 Transaction file updated.
 Accounts file updated.
 Session terminated.

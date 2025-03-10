@@ -228,7 +228,6 @@ class StandardUser(User):
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
         self.max_deposit_limit = 1000.0
-        self.max_paybill_limit = 2000.0
 
 
     def withdrawal(self, account_num, amount, account_name):
@@ -357,6 +356,8 @@ class Admin(User):
     """
     def __init__(self, current_accounts_file, transaction_file):
         super().__init__(current_accounts_file, transaction_file)
+
+        self.max_paybill_limit = 2000.0
 
 
     def create_account(self, account_name, account_num, balance, transaction_plan):
@@ -675,6 +676,7 @@ def main():
                 current_index += 2
                 user.disable_account(account_name, account_num)
             elif command == "paybill":
+                # Expected input order: account_name, account_num, amount, company
                 if current_index + 3 >= len(lines):
                     print("Error: Insufficient arguments for paybill command.")
                     break
@@ -691,7 +693,10 @@ def main():
                     break
                 company = lines[current_index]
                 current_index += 1
-                user.pay_bill(account_name, account_num, amount, company)
+
+                # Call the method with the account number first, as expected by pay_bill
+                user.pay_bill(account_num, amount, company, account_name)
+
            
             elif command in ["deposit", "withdrawal", "transfer"]:
                 print("Error: Admin users are not permitted to perform transaction commands.")
