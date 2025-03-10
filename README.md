@@ -1,16 +1,16 @@
 # SQAFinalProject
 SQA Final Project
 <br />Group Members: Amelia Eric-Markovic, Eisha Rizvi, Sadhna Drall
-This is the current_accounts_file.txt needed to run the tests properly:
-12345 JohnDoe_____________ A    500.00 NP
-54321 BobSmith____________ A   1150.00 SP
-98765 AliceBrown__________ A   5000.00 NP
-11111 CharlieAdams________ A   7500.00 NP
-05452 EishaRizvi__________ A    900.00 NP
-12367 JaneDoe_____________ A    700.00 NP
-45367 FelixDoe_____________ A    700.00 NP
-END_OF_FILE
-Below is the output from the terminal for Phase 3
+<br />This is the current_accounts_file.txt needed to run the tests properly:
+<br />12345 JohnDoe_____________ A    500.00 NP
+<br />54321 BobSmith____________ A   1150.00 SP
+<br />98765 AliceBrown__________ A   5000.00 NP
+<br />11111 CharlieAdams________ A   7500.00 NP
+<br />05452 EishaRizvi__________ A    900.00 NP
+<br />12367 JaneDoe_____________ A    700.00 NP
+<br />45367 FelixDoe_____________ A    700.00 NP
+<br />END_OF_FILE
+<br />Below is the output from the terminal for Phase 3
 ```bash
 @AmeliaEric ➜ /workspaces/SQAFinalProject (main) $ cd /workspaces/SQAFinalProject/BankingSystemTests
 @AmeliaEric ➜ /workspaces/SQAFinalProject/BankingSystemTests (main) $ chmod +x run_tests.sh
