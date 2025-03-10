@@ -261,7 +261,7 @@ class StandardUser(User):
                 print(account.balance)
                 account.balance -= amount
                 print(account.balance)
-                transaction = f"WITHDRAWAL {account_num} {amount:.2f}"
+                transaction = f"01 {account_num} {amount:.2f}"
                 self.transactions.append(transaction)
                 print(account.balance)
                 transaction_msg = account.select_transaction(1, amount)
@@ -306,7 +306,7 @@ class StandardUser(User):
             return
         from_account.balance -= amount
         to_account.balance += amount
-        transaction = f"TRANSFER {from_acc} {to_acc} {amount:.2f}"
+        transaction = f"02 {from_acc} {to_acc} {amount:.2f}"
         self.transactions.append(transaction)
         print("Transfer successful.")
 
@@ -338,7 +338,7 @@ class StandardUser(User):
             print("Error: Deposit amount must be greater than zero.")
             return
         account.balance += amount
-        transaction = f"DEPOSIT {account.account_number} {amount:.2f}"
+        transaction = f"04 {account.account_number} {amount:.2f}"
         self.transactions.append(transaction)
         print("Deposit successful.")
 
