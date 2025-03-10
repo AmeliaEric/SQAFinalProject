@@ -141,8 +141,6 @@ class User:
         #print(f"Logged in as {username} in {session_type} mode.")
 
 
-
-
     def logout(self):
         """
         Logs the user out of the banking system.
