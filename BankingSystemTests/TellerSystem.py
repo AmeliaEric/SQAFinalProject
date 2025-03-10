@@ -312,36 +312,6 @@ class StandardUser(User):
         print("Transfer successful.")
 
 
-
-
-    def pay_bill(self, account_num, amount, company, account_name):
-        """
-        Processes a bill payment transaction for a standard user.
-        """
-        if not self.is_logged_in:
-            print("Error: No active session. Please login first.")
-            return
-        account = self.find_account(account_num)
-        if not account:
-            print("Error: Account does not exist.")
-            return
-        if account.account_name != account_name:
-            print("Account name for the account number given: " + account.account_name)
-            print("Account name inputed: " + account_name)
-            print("Error: Account holder name does not match account number.")
-            return
-        if account:
-            if amount > self.max_paybill_limit:
-                print("Payment amount exceeds limit.")
-                return
-            account = self.find_account(account_num)
-            if account:
-                transaction = f"03 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
-                self.transactions.append(transaction)
-                transaction_msg = account.select_transaction(3, amount)
-                print(transaction_msg)
-
-
     def deposit(self, account_num, amount, account_name):
         """
         Processes a deposit transaction for a standard user.
@@ -498,6 +468,32 @@ class Admin(User):
         else:
             print("Error: Account is already on the non-student plan.")
             return
+    def pay_bill(self, account_num, amount, company, account_name):
+        """
+        Processes a bill payment transaction for a standard user.
+        """
+        if not self.is_logged_in:
+            print("Error: No active session. Please login first.")
+            return
+        account = self.find_account(account_num)
+        if not account:
+            print("Error: Account does not exist.")
+            return
+        if account.account_name != account_name:
+            print("Account name for the account number given: " + account.account_name)
+            print("Account name inputed: " + account_name)
+            print("Error: Account holder name does not match account number.")
+            return
+        if account:
+            if amount > self.max_paybill_limit:
+                print("Payment amount exceeds limit.")
+                return
+            account = self.find_account(account_num)
+            if account:
+                transaction = f"03 {account_name:<20} {int(account_num):05d} {amount:08.2f} --"
+                self.transactions.append(transaction)
+                transaction_msg = account.select_transaction(3, amount)
+                print(transaction_msg)
 
 
 # Extra Test Functions
@@ -678,8 +674,26 @@ def main():
                 account_num = lines[current_index + 1]
                 current_index += 2
                 user.disable_account(account_name, account_num)
+            elif command == "paybill":
+                if current_index + 3 >= len(lines):
+                    print("Error: Insufficient arguments for paybill command.")
+                    break
+                account_name = lines[current_index]
+                account_num = lines[current_index + 1]
+                try:
+                    amount = float(lines[current_index + 2])
+                except ValueError:
+                    print("Error: Invalid amount for paybill.")
+                    break
+                current_index += 3
+                if current_index >= len(lines):
+                    print("Error: Company name missing for paybill command.")
+                    break
+                company = lines[current_index]
+                current_index += 1
+                user.pay_bill(account_name, account_num, amount, company)
            
-            elif command in ["deposit", "withdrawal", "transfer", "paybill"]:
+            elif command in ["deposit", "withdrawal", "transfer"]:
                 print("Error: Admin users are not permitted to perform transaction commands.")
                 # Skip the expected number of arguments:
                 if command in ["deposit", "withdrawal"]:
@@ -765,26 +779,6 @@ def main():
                     break
                 current_index += 3
                 user.transfer(from_acc, to_acc, amount, account_name)
-
-
-            elif command == "paybill":
-                # Expected: account_num, amount, company (company may contain spaces but is provided on one line)
-                if current_index + 2 >= len(lines):
-                    print("Error: Insufficient arguments for paybill command.")
-                    break
-                account_num = lines[current_index]
-                try:
-                    amount = float(lines[current_index + 1])
-                except ValueError:
-                    print("Error: Invalid amount for paybill.")
-                    break
-                current_index += 2
-                if current_index >= len(lines):
-                    print("Error: Company name missing for paybill command.")
-                    break
-                company = lines[current_index]
-                current_index += 1
-                user.pay_bill(account_num, amount, company, account_name)
 
 
             else:
