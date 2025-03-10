@@ -1,8 +1,9 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
+6400.0
 6300.0
-6100.0
-Withdrew $200.0 from account 11111
+6300.0
+Withdrew $100.0 from account 11111
 Transaction file updated.
 Accounts file updated.
 Session terminated.

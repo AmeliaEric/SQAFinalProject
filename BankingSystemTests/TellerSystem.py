@@ -229,6 +229,7 @@ class StandardUser(User):
         super().__init__(current_accounts_file, transaction_file)
         self.max_withdrawal_limit = 1000.0
         self.max_transfer_limit = 1000.0
+        self.max_deposit_limit = 1000.0
         self.max_paybill_limit = 2000.0
 
 
@@ -265,6 +266,7 @@ class StandardUser(User):
                 print(account.balance)
                 transaction = f"WITHDRAWAL {account_num} {amount:.2f}"
                 self.transactions.append(transaction)
+                print(account.balance)
                 transaction_msg = account.select_transaction(1, amount)
                 print(transaction_msg)
 

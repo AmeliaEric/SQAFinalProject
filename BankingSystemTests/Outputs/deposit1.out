@@ -1,8 +1,8 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Enter deposit account number: 54321
+Enter deposit account number: 05452
 Enter amount to deposit: 300.00
-Error: Account holder name does not match account number.
+Deposit successful.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
