@@ -1,4 +1,6 @@
-54321 BobSmith             A    350.00 NP
-11111 CharlieAdams         A   7200.00 NP
-05452 EishaRizvi           A   1200.00 NP
+12345 JohnDoe_____________ D    500.00 NP
+54321 BobSmith____________ A    250.00 SP
+98765 AliceBrown__________ A   5000.00 NP
+11111 CharlieAdams________ A   7500.00 NP
+05452 EishaRizvi__________ A    900.00 NP
 END_OF_FILE
