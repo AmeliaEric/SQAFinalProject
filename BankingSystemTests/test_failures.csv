@@ -10,6 +10,5 @@ disable3, See ExpectedTransaction/disable3.etf, See Outputs/disable3.atf, Differ
 disable4, See ExpectedTransaction/disable4.etf, See Outputs/disable4.atf, Differences found
 disable7, See ExpectedTransaction/disable7.etf, See Outputs/disable7.atf, Differences found
 disable9, See ExpectedTransaction/disable9.etf, See Outputs/disable9.atf, Differences found
-login3, See ExpectedTransaction/login3.etf, See Outputs/login3.atf, Differences found
 login4, See ExpectedTransaction/login4.etf, See Outputs/login4.atf, Differences found
 paybill1, See ExpectedTransaction/paybill1.etf, See Outputs/paybill1.atf, Differences found

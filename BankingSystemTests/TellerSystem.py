@@ -446,30 +446,23 @@ class Admin(User):
 
     def disable_account(self, account_name, account_num):
         if not self.is_logged_in or self.session_type != "admin":
-            print("Error: This transaction requires admin access.")
+            print("Error: Admin access required.")
             return
-        if not account_name:
-            print("Error: Account holder name cannot be empty.")
-            return
-        if not account_num:
-            print("Error: Account number cannot be empty.")
-            return 
-        account = self.find_account(account_num)
+
+        account = self.find_account(account_num, account_name)
         if not account:
-            print("Error: Account does not exist.")
-            return
-        if account.account_name != account_name:
-            print("Error: Account holder name does not match account number.")
+            print("Error: Account does not exist or name mismatch.")
             return
         if account.status == "D":
             print("Error: Account already disabled.")
             return
-        if account:
-            account.select_maintenance("disable")
-            # Added correct formatting to match your existing transactions structure:
-            transaction = f"07 {account_name:<20} {int(account_num):05d} 00000000.00 DA"
-            self.transactions.append(transaction)
-            print(f"Disabled account {account_num} for {account_name}")
+
+        account.status = "D"
+        # EXACT formatting to match your provided etf outputs
+        transaction = f"DISABLE {account_name} {account_num}"
+        self.transactions.append(transaction)
+        print(f"Disabled account {account_num} for {account_name}")
+
 
 
     def change_plan(self, account_name, account_num):

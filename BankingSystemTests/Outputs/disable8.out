@@ -1,7 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
 Account 9999 not found.
-Error: Account does not exist.
+Error: Account does not exist or name mismatch.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
