@@ -1,7 +1,7 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Account 54321 not found.
-Error: Account does not exist.
+Changed plan for account 54321 for BobSmith
+Account plan updated successfully.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

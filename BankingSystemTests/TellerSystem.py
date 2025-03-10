@@ -1,4 +1,3 @@
- 
 # This program simulates a banking system front end that processes transactions.
 # Input files: "current_accounts_file.txt"
 # Output file: daily_transaction_file.txt
@@ -157,9 +156,6 @@ class User:
 
 
     def read_accounts_file(self):
-        """
-        Reads the current accounts file and loads accounts for the user.
-        """
         try:
             with open(self.current_accounts_file, "r") as file:
                 lines = file.readlines()
@@ -167,14 +163,13 @@ class User:
                     line = line.strip()
                     if line.startswith("END_OF_FILE"):
                         break  # Stop reading when end marker is reached
-                   
+
                     # Extract fields based on fixed positions
                     account_number = line[:5].strip()
-                    account_name = line[6:26].strip()
+                    account_name = line[6:26].replace("_", " ").strip()  # Replace underscores with spaces
                     status = line[27].strip()
                     balance = float(line[29:38].strip())
                     transaction_plan = line[39:].strip()
-
 
                     account = Account(account_number, account_name, status, balance, transaction_plan, self.current_accounts_file, self.transaction_file)
                     self.accounts.append(account)
@@ -183,45 +178,39 @@ class User:
 
 
     def write_transaction_file(self):
+        # Write transaction logs to the daily transaction file
         with open(self.transaction_file, "a") as transaction_file:
             for transaction in self.transactions:
-                tokens = transaction.split()
-                if len(tokens) != 5:
-                    print("Warning: Skipping malformed transaction:", transaction)
-                    continue
-                transaction_code, account_name, account_number, amount, misc = tokens
-                try:
-                    formatted_transaction = (
-                    f"{transaction_code:<2} "
-                    f"{account_name:<20} "
-                    f"{int(account_number):05d} "
-                    f"{float(amount):08.2f} "
-                    f"{misc:2}"
-                )
-                except Exception as e:
-                    print("Error formatting transaction:", transaction, "Error:", e)
-                    continue
-                transaction_file.write(formatted_transaction + "\n")
-            transaction_file.write("00 00000 00000.00\n")
+                transaction_file.write(transaction + "\n")
+            transaction_file.write("00 00000 00000.00\n")  # End of transactions marker
         print("Transaction file updated.")
-               
+
+        # Update the current accounts file with the latest account details
         with open(self.current_accounts_file, "w") as accounts_file:
-            for account in self.transactions:
+            for account in self.accounts:
                 accounts_file.write(
-                f"{account.account_number:<5} {account.account_name:<20} {account.status} {account.balance:>9.2f} {account.transaction_plan}\n"
+                    f"{account.account_number:<5} {account.account_name:<20} {account.status} {account.balance:>9.2f} {account.transaction_plan}\n"
                 )
-            accounts_file.write("END_OF_FILE\n")
+            accounts_file.write("END_OF_FILE\n")  # End of accounts marker
         print("Accounts file updated.")
 
 
-    def find_account(self, account_num):
+    def find_account(self, account_num, account_name=None):
         """
-        Finds an account by account number.
+        Finds an account by account number and optionally by account name.
+        Ignores underscores in the account name during comparison.
         Returns: The matching account, or None if not found.
         """
         for account in self.accounts:
             if account.account_number == account_num:
-                return account
+                if account_name:
+                    # Strip underscores from both names before comparison
+                    stored_name = account.account_name.replace("_", "").strip()
+                    input_name = account_name.replace("_", "").strip()
+                    if stored_name == input_name:
+                        return account
+                else:
+                    return account
         print(f"Account {account_num} not found.")
         return None
 
@@ -495,25 +484,26 @@ class Admin(User):
         if not account_num:
             print("Error: Account number cannot be empty.")
             return
-        account = self.find_account(account_num)
+
+        # Find the account, ignoring underscores in the account name
+        account = self.find_account(account_num, account_name)
         if not account:
             print("Error: Account does not exist.")
-            return
-        if account.account_name != account_name:
-            print("Error: Account holder name does not match account number.")
             return
         if account.status == "D":
             print("Error: Cannot change plan for a disabled account.")
             return
-        if account.transaction_plan == "NP":
-            print("Account is already on the non-student plan.")
-            return
-        if account:
-            account.select_maintenance("change_plan")
-            transaction = f"08 {account_name:<20} {int(account_num):05d} 0.00 CP"
+
+        if account.transaction_plan == "SP":
+            account.transaction_plan = "NP"
+            # Log the transaction with the correct format
+            transaction = f"08 {account_name:<20} {int(account_num):05d} {account.balance:08.2f} {account.transaction_plan}"
             self.transactions.append(transaction)
             print(f"Changed plan for account {account_num} for {account_name}")
-           
+            print("Account plan updated successfully.")
+        else:
+            print("Error: Account is already on the non-student plan.")
+            return
 
 
 # Extra Test Functions

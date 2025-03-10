@@ -1,5 +1,4 @@
 Test Case, Expected Output, Actual Output, Difference
-changeplan1, See ExpectedTransaction/changeplan1.etf, See Outputs/changeplan1.atf, Differences found
 creation1, See ExpectedTransaction/creation1.etf, See Outputs/creation1.atf, Differences found
 creation7, See ExpectedTransaction/creation7.etf, See Outputs/creation7.atf, Differences found
 deletion1, See ExpectedTransaction/deletion1.etf, See Outputs/deletion1.atf, Differences found

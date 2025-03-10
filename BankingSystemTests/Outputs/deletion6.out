@@ -1,7 +1,8 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Account 54321 not found.
-Error: Account does not exist.
+Account name for the account number given: BobSmith
+Account name inputed: ""
+Error: Account holder name does not match account number.
 Transaction file updated.
 Accounts file updated.
 Session terminated.

@@ -1,7 +1,6 @@
 Welcome to the banking system.
 Enter session type: standard or admin.
-Account 11111 not found.
-Error: Account does not exist.
+Error: Account is already on the non-student plan.
 Transaction file updated.
 Accounts file updated.
 Session terminated.
