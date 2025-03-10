@@ -11,7 +11,7 @@ This is the current_accounts_file.txt needed to run the tests properly:
 45367 FelixDoe_____________ A    700.00 NP
 END_OF_FILE
 Below is the output from the terminal for Phase 3
-'''python
+```bash
 @AmeliaEric ➜ /workspaces/SQAFinalProject (main) $ cd /workspaces/SQAFinalProject/BankingSystemTests
 @AmeliaEric ➜ /workspaces/SQAFinalProject/BankingSystemTests (main) $ chmod +x run_tests.sh
 @AmeliaEric ➜ /workspaces/SQAFinalProject/BankingSystemTests (main) $ ./run_tests.sh
